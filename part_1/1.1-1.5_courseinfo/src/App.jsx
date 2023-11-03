@@ -23,7 +23,6 @@ const Content = (props) => {
   const Total = (props) => {
       // eslint-disable-next-line react/prop-types
     const courseArray = props.parts;
-    console.log(courseArray)
           // eslint-disable-next-line react/prop-types
     const total = courseArray.reduce((acc, current) => {
       return acc + current.exercises
