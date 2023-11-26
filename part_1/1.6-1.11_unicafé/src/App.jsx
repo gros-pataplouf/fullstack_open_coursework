@@ -5,21 +5,30 @@ const Button = ({onClickHandler, text}) => {
   return <button onClick={onClickHandler}>{text}</button>
 }
 
+const StatisticsLine = ({text, value}) => {
+  return (<tr>
+    <td>{text}</td>
+    <td>{value}</td>
+    </tr>)
+}
+
 const Statistics = ({feedback}) => {
   return (
     <div>
 
     <h1>statistics</h1>
-    {feedback.bad.count + feedback.good.count + feedback.neutral.count === 0?
+    {feedback.bad + feedback.good + feedback.neutral === 0?
       <p>No feedback given</p> :
-      <>
-      <p>GOOD {feedback.good.count}</p>
-    <p>NEUTRAL {feedback.neutral.count}</p>
-    <p>BAD {feedback.bad.count}</p>
-    <p>ALL {feedback.good.count + feedback.neutral.count + feedback.bad.count}</p>
-    <p>AVERAGE {((feedback.good.value*feedback.good.count + feedback.bad.value*feedback.bad.count)/(feedback.good.count + feedback.neutral.count + feedback.bad.count)).toFixed(2)}</p>
-    <p>POSITIVE {((feedback.good.value*feedback.good.count)/(feedback.good.count + feedback.neutral.count + feedback.bad.count)*100).toFixed(2)}%</p>
-    </>
+      <table>
+        <tbody>
+        <StatisticsLine text="Good" value={feedback.good}/>
+        <StatisticsLine text="Neutral" value={feedback.neutral}/>
+        <StatisticsLine text="Bad" value={feedback.bad}/>
+        <StatisticsLine text="All" value={feedback.good + feedback.neutral + feedback.bad}/>
+        <StatisticsLine text="Average" value={((feedback.good - feedback.bad)/(feedback.good + feedback.neutral + feedback.bad)).toFixed(2)}/>
+        <StatisticsLine text="Positive" value={`${((feedback.good)/(feedback.good + feedback.neutral + feedback.bad)*100).toFixed(2)}%`}/>
+        </tbody>
+    </table>
     }
     </div>
   )
@@ -29,30 +38,27 @@ const Statistics = ({feedback}) => {
 const App = () => {
   // save clicks of each button to its own state
   const [feedback, setFeedback ] = useState({
-    good : {count: 0, value: 1}, 
-    neutral: {count: 0, value: 0}, 
-    bad: {count: 0, value: -1}
+    good : 0, 
+    neutral: 0, 
+    bad: 0,
   })
 
   const handleFeedback = (how) => {
       const innerFunction = () => {
         switch(how) {
           case "good":
-            setFeedback({...feedback, good: {...feedback.good, count: feedback.good.count + 1}});
+            setFeedback({...feedback, good: feedback.good + 1});
             break;
           case "neutral":
-            setFeedback({...feedback, neutral: {...feedback.neutral, count: feedback.neutral.count + 1}});
+            setFeedback({...feedback, neutral: feedback.neutral + 1});
             break;
           case "bad":
-            setFeedback({...feedback, bad: {...feedback.bad, count: feedback.bad.count + 1}});
+            setFeedback({...feedback, bad: feedback.bad + 1});
             break;
         }
       }
       return innerFunction
     }
-  
-
-
   return (
     <div>
       <h1>give feedback</h1>
