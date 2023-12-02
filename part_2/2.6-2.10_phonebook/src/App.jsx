@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Filter = ({ props }) => {
-  const { persons, setFilteredPersons } = props;
+  const { persons, setFilteredPersons, setSearchFailed } = props;
   function handleSearch(e) {
-    setFilteredPersons(
-      persons.filter((person) =>
-        person.name.toLowerCase().includes(e.target.value.toLowerCase()),
-      ),
-    );
+    const results =       persons.filter((person) =>
+    person.name.toLowerCase().includes(e.target.value.toLowerCase()),
+  );
+    setFilteredPersons(results);
+    if (!results.length) {setSearchFailed(true)}
+
+  
+
   }
 
   return (
@@ -93,9 +97,9 @@ const Form = ({ props }) => {
 };
 
 const Phonebook = ({ props }) => {
-  const { persons, filteredPersons } = props;
+  const { persons, filteredPersons, searchFailed } = props;
 
-  return !filteredPersons.length
+  return !filteredPersons.length && !searchFailed
     ? persons.map((person) => (
         <p key={person.id}>
           {person.name}&nbsp;{person.number}
@@ -109,20 +113,20 @@ const Phonebook = ({ props }) => {
 };
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filteredPersons, setFilteredPersons] = useState([]);
+  const [searchFailed, setSearchFailed] = useState(false);
+  useEffect(()  =>{
+    axios.get("http://localhost:3000/persons")
+    .then(response => setPersons(response.data))
+  }, [])
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter props={{ persons, setFilteredPersons }} />
+      <Filter props={{ persons, setFilteredPersons, setSearchFailed }} />
       <Form
         props={{
           newName,
@@ -135,7 +139,7 @@ const App = () => {
         }}
       />
       <h2>Numbers</h2>
-      <Phonebook props={{ persons, filteredPersons }} />
+      <Phonebook props={{ persons, filteredPersons, searchFailed }} />
     </div>
   );
 };
