@@ -1,0 +1,22 @@
+.table__course {
+  width: 30vw;
+  background-color: hsl(180, 53%, 90%);
+  padding: 2rem;
+}
+
+.table__course-title {
+  font-weight: 800;
+  color: darkmagenta;
+}
+
+.table__course-cell {
+  width: 50%;
+}
+
+.table__course-sum {
+  font-weight: 800;
+}
+
+.table__course-row:nth-child(2n) {
+  background-color: hsl(180, 53%, 80%);
+}
