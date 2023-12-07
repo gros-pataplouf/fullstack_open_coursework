@@ -1,6 +1,18 @@
 import personsService from "../services/persons";
 
 /* eslint-disable react/prop-types */
+
+const Notification = ({ message }) => {
+  const notificationStyle = {
+    borderColor: message.type === "warning" ? "red" : "green",
+    borderStyle: "solid",
+    borderWidth: "3px",
+    color: message.type === "warning" ? "red" : "green",
+    backgroundColor: "azure",
+    padding: "15px",
+  };
+  return <p style={notificationStyle}>{message.text}</p>;
+};
 const Form = ({ props }) => {
   const {
     newName,
@@ -10,6 +22,8 @@ const Form = ({ props }) => {
     persons,
     setPersons,
     setFilteredPersons,
+    message,
+    setMessage,
   } = props;
 
   async function handleSubmit(e) {
@@ -17,7 +31,6 @@ const Form = ({ props }) => {
     if (!newName.trim() || !newNumber.trim()) {
       return window.alert("Form incomplete");
     }
-
     const newPerson = {
       name: newName.trim(),
       number: newNumber.trim(),
@@ -37,7 +50,13 @@ const Form = ({ props }) => {
           .update(existingPerson.id, newPerson)
           .then((response) => {
             console.log(response);
-            window.alert(`${existingPerson.name} has been updated.`);
+            setMessage({
+              type: "success",
+              text: `${existingPerson.name} has been updated!`,
+            });
+            setTimeout(() => {
+              setMessage({ type: null, text: "" });
+            }, 2000);
             personsService.getAll().then((response) => {
               console.log(response);
               setPersons(response.data);
@@ -57,6 +76,13 @@ const Form = ({ props }) => {
         .create(newPerson)
         .then((response) => {
           console.log(response);
+          setMessage({
+            type: "success",
+            text: `${newPerson.name} has been created!`,
+          });
+          setTimeout(() => {
+            setMessage({ type: null, text: "" });
+          }, 2000);
           personsService.getAll().then((response) => {
             setPersons(response.data);
             //handle situation where searchForm has entry, filtered results should be updated without reload
@@ -86,6 +112,7 @@ const Form = ({ props }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      {message.type && <Notification message={message} />}
       <div>
         name:{" "}
         <input

@@ -5,10 +5,9 @@ const getAll = () => {
   return axios.get(url);
 };
 
-const getByName = (name) => {
-  return axios.get(url).then((response) => {
-    return response.data.filter((item) => item.name === name);
-  });
+const getByName = async (name) => {
+  const response = await axios.get(url);
+  return response.data.filter((item) => item.name === name);
 };
 
 const create = (newPerson) => {
@@ -16,7 +15,6 @@ const create = (newPerson) => {
 };
 
 const update = (id, newPerson) => {
-  console.log(id, newPerson);
   return axios.put(`${url}/${id}`, newPerson);
 };
 
