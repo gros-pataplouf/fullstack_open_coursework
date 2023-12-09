@@ -64,10 +64,14 @@ const Form = ({ props }) => {
           })
           .catch((error) => {
             console.error(error);
-            return window.alert(
-              "Sorry, there has been a problem updating",
-              existingPerson.name,
-            );
+            setMessage({
+              type: "warning",
+              text: `Sorry, there has been a problem updating ${existingPerson.name}.`,
+            });
+            setTimeout(() => {
+              setMessage({ type: null, text: "" });
+            }, 2000);
+
           });
       }
       return;

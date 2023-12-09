@@ -14,7 +14,7 @@ const App = () => {
   const [message, setMessage] = useState({ type: null, text: "" });
   useEffect(() => {
     personsService.getAll().then((response) => setPersons(response.data));
-  }, []);
+  }, []); 
 
   return (
     <div>
