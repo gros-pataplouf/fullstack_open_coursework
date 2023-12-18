@@ -1,8 +1,9 @@
-POST http://localhost:3003/api/blogs
+GET http://localhost:3003/api/blogs
 content-type: application/json
 
 { 
-    "name": "Santa Claus' blog",
+    "title": "Santa Claus' blog",
     "author": "Santa Claus",
-    "url": "https://www.fatherchristmas.dev"
+    "url": "https://www.fatherchristmas.dev",
+    "likes" : 44
 }
