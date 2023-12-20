@@ -1,4 +1,4 @@
-const listHelper = require('../utils/listHelper')
+const listHelper = require('../utils/list_helper')
 const testData = require('./testData.json')
 
 test('dummy returns one', () => {
