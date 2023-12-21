@@ -2,7 +2,6 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 { 
-    "title": "Santa Claus' blog",
     "author": "Santa Claus",
     "url": "https://www.fatherchristmas.dev",
     "likes" : 44
