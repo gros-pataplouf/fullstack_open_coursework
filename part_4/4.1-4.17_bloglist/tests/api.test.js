@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
 const testData = require('./testData.json')
 mongoose.set('bufferTimeoutMS', 30000)
 
@@ -9,6 +11,7 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
   const testEntries = testData.map(entry => new Blog(entry))
   await Promise.all(testEntries.map(entry => entry.save()))
 })
@@ -128,6 +131,39 @@ describe('PUT /api/blogs/:id', () => {
     await api.put(`/api/blogs/${fakeId}`)
       .send(fakePost)
       .expect(404)
+  })
+
+})
+
+describe('/api/users', () => {
+  test('a user can be created with username, name, password', async () => {
+    const newUser = {
+      username: 'pata',
+      name: 'plouf',
+      password: '1290bea'
+    }
+    await api.post('/api/users')
+      .send(newUser)
+      .expect(201)
+  })
+  test('a GET to api/users/ displays all the users', async () => {
+    const newUsers = [{
+      username: 'plouf',
+      name: 'pata',
+      passwordHash: '1290bea'
+    },
+    {
+      username: 'pata',
+      name: 'plouf',
+      passwordHash: '1290bea'
+    }]
+    const usersToSave = newUsers.map(user => new User(user))
+    await Promise.all(usersToSave.map(user => user.save()))
+    const response = await api
+      .get('/api/users')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    expect(response.body.length).toBe(2)
   })
 
 })
