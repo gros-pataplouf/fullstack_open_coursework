@@ -165,6 +165,61 @@ describe('/api/users', () => {
       .expect('Content-Type', /application\/json/)
     expect(response.body.length).toBe(2)
   })
+  test('creating a user without username returns a 400 and a message', async () => {
+    const invalidUser = {
+      name: 'pata',
+      password: 'XXX123'
+    }
+    const invalidUserCreation = await api.post('/api/users')
+      .send(invalidUser)
+    console.log(invalidUserCreation)
+    expect(invalidUserCreation.status).toBe(400)
+    expect(JSON.parse(invalidUserCreation.text)).toEqual({ error: 'User validation failed: username: username missing' })
+
+  })
+  test('creating a user without password returns a 400 and a message', async () => {
+    const invalidUser = {
+      name: 'pata',
+      username: 'XXX123'
+    }
+    const invalidUserCreation = await api.post('/api/users')
+      .send(invalidUser)
+    console.log(invalidUserCreation)
+    expect(invalidUserCreation.status).toBe(400)
+    expect(JSON.parse(invalidUserCreation.text)).toEqual({ error: 'Password must be at least 3 characters long' })
+  })
+
+  test('creating a user without too short a password returns a 400 and a message', async () => {
+    const invalidUser = {
+      name: 'pata',
+      username: 'XXX123',
+      password: '12'
+    }
+    const invalidUserCreation = await api.post('/api/users')
+      .send(invalidUser)
+    console.log(invalidUserCreation)
+    expect(invalidUserCreation.status).toBe(400)
+    expect(JSON.parse(invalidUserCreation.text)).toEqual({ error: 'Password must be at least 3 characters long' })
+  })
+
+  test('creating a user without too short a password returns a 400 and a message', async () => {
+    const firstUser = {
+      name: 'pata',
+      username: 'XXX123',
+      password: '1234'
+    }
+    await api.post('/api/users')
+      .send(firstUser)
+    const secondUser = {
+      name: 'prince charles',
+      username: 'XXX123',
+      password: '123456'
+    }
+    const invalidUserCreation = await api.post('/api/users')
+      .send(secondUser)
+    expect(invalidUserCreation.status).toBe(403)
+    expect(JSON.parse(invalidUserCreation.text)).toEqual({ error: 'There is already a user with this username.' })
+  })
 
 })
 
