@@ -14,4 +14,12 @@ class NonUniqueUserError extends Error {
   }
 }
 
-module.exports = { PasswordError, NonUniqueUserError }
+class BadUpdateError extends Error {
+  constructor(message) {
+    super(message)
+    this.status = 400
+    this.name = 'BadUpdateError'
+  }
+}
+
+module.exports = { PasswordError, NonUniqueUserError, BadUpdateError }

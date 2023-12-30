@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+content-type: application/json
+
+{ 
+    "user": "658fd2c0e1927e3f32ec3aae",
+    "title": "No midle name",
+    "author": "Lee Child",
+    "url": "https://www.actionwriter.fi",
+    "likes": 80
+}

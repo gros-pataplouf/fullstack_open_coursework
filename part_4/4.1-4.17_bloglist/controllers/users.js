@@ -20,11 +20,8 @@ userRouter.post('/', async (request, response) => {
 })
 
 userRouter.get('/', async (_request, response) => {
-  const allUsers = await User.find({})
-  console.log('all users', allUsers)
+  const allUsers = await User.find({}).populate('blogs', { author : 1, title : 1 })
   response.status(200).send(allUsers)
 })
-
-
 
 module.exports = userRouter
