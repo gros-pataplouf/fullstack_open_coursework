@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const HashUser = require('./test_helper')
 
 const testBlogs = require('./testBlogs.json')
 const testUsers = require('./testUsers.json')
@@ -16,7 +17,8 @@ beforeEach(async () => {
   await User.deleteMany({})
   const blogsForDb = testBlogs.map(entry => new Blog(entry))
   await Promise.all(blogsForDb.map(entry => entry.save()))
-  const usersForDb = testUsers.map(entry => new User(entry))
+  const usersWithHash = testUsers.map(entry => new HashUser(entry.username, entry.password, entry.name))
+  const usersForDb = usersWithHash.map(entry => new User(entry))
   await Promise.all(usersForDb.map(entry => entry.save()))
 })
 
@@ -164,7 +166,6 @@ describe('/api/users', () => {
     }
     const invalidUserCreation = await api.post('/api/users')
       .send(invalidUser)
-    console.log(invalidUserCreation)
     expect(invalidUserCreation.status).toBe(400)
     expect(JSON.parse(invalidUserCreation.text)).toEqual({ error: 'User validation failed: username: username missing' })
 
@@ -176,7 +177,6 @@ describe('/api/users', () => {
     }
     const invalidUserCreation = await api.post('/api/users')
       .send(invalidUser)
-    console.log(invalidUserCreation)
     expect(invalidUserCreation.status).toBe(400)
     expect(JSON.parse(invalidUserCreation.text)).toEqual({ error: 'Password must be at least 3 characters long' })
   })
@@ -189,7 +189,6 @@ describe('/api/users', () => {
     }
     const invalidUserCreation = await api.post('/api/users')
       .send(invalidUser)
-    console.log(invalidUserCreation)
     expect(invalidUserCreation.status).toBe(400)
     expect(JSON.parse(invalidUserCreation.text)).toEqual({ error: 'Password must be at least 3 characters long' })
   })
@@ -211,6 +210,43 @@ describe('/api/users', () => {
       .send(secondUser)
     expect(invalidUserCreation.status).toBe(403)
     expect(JSON.parse(invalidUserCreation.text)).toEqual({ error: 'There is already a user with this username.' })
+  })
+
+})
+
+describe('/login', () => {
+  test('sending a post request to /login with missing username, or non existing user, or a wrong password, or without a password, returns a 401', async () => {
+    const userNoPassword = { ...testUsers[0] }
+    delete userNoPassword.password
+    const loginNoPassword = await api.post('/login').send(userNoPassword)
+    expect(loginNoPassword.status).toBe(401)
+
+    const userNoUsername = { name: testUsers[0].name, password: testUsers[0].password }
+    const loginNoUsername = await api.post('/login').send(userNoUsername)
+    expect(loginNoUsername.status).toBe(401)
+
+    const userNotFound = { username: 'ghost', password: '123456' }
+    const loginUserNotFound = await api.post('/login').send(userNotFound)
+    expect(loginUserNotFound.status).toBe(401)
+
+    const userWrongPassword = { ...testUsers[0] }
+    userWrongPassword.password = 'wrongPwd'
+    const loginWrongPassword = await api.post('/login').send(userWrongPassword)
+    expect(loginWrongPassword.status).toBe(401)
+
+  })
+
+  test('sending a POST request to /login with correct username and password returns a token in JSON format and a 200', async () => {
+    const { username, name, password } = testUsers[1]
+    const successfulLogin = await api.post('/login').send({ username, password, name })
+    const desiredResponse = {
+      username,
+      name,
+      token: expect.stringMatching(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+    }
+    expect(successfulLogin.status).toBe(200)
+    expect(JSON.parse(successfulLogin.text)).toMatchObject(desiredResponse)
+
   })
 
 })

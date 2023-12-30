@@ -16,6 +16,7 @@ userRouter.post('/', async (request, response) => {
   const passwordHash = bcrypt.hashSync(password, salt)
   const newUser = new User({ username, name, passwordHash })
   const savedUser = await newUser.save()
+  console.log(savedUser)
   response.status(201).send(savedUser)
 })
 

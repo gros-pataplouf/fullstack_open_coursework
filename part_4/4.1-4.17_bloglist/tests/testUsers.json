@@ -6,11 +6,11 @@
   {
     "username": "plouf",
     "name": "pata",
-    "passwordHash": "1290bea"
+    "password": "1290bea"
   },
   {
     "username": "pata",
     "name": "plouf",
-    "passwordHash": "1290bea"
+    "password": "1290bea"
   }
 ]
