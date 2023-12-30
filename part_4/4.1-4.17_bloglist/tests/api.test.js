@@ -50,14 +50,33 @@ describe('GET /api/blogs', () => {
 })
 
 describe('POST /api/blogs', () => {
-  test('sending a post request to /api/blogs creates a new blog post', async () => {
-    const newBlog = new Blog({
+  test('sending a post request to /api/blogs with no token fails', async () => {
+    const newBlog = {
       title: 'JavaScript quirks',
       author: 'Geeky nerds',
       url: 'https://www.js-reexamined.fr',
       likes: 9
-    })
-    await newBlog.save()
+    }
+    await api.post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
+  })
+
+  test('sending a post request to /api/blogs creates a new blog post', async () => {
+    const { username, name, password } = testUsers[1]
+    const successfulLogin = await api.post('/login').send({ username, password, name })
+    const token = JSON.parse(successfulLogin.text).token
+
+    const newBlog = {
+      title: 'JavaScript quirks',
+      author: 'Geeky nerds',
+      url: 'https://www.js-reexamined.fr',
+      likes: 9
+    }
+    const newBlogSaved = await api.post('/api/blogs')
+      .set({ 'Authorization': `Bearer ${token}` })
+      .send(newBlog)
+    expect(newBlogSaved.status).toBe(201)
     const response = await api
       .get('/api/blogs')
     expect(response.body.length).toBe(testBlogs.length + 1)
@@ -66,23 +85,31 @@ describe('POST /api/blogs', () => {
   })
 
   test(' if the likes property is missing from the request, it will default to the value 0', async () => {
-    const newBlog = new Blog({
+    const { username, name, password } = testUsers[1]
+    const successfulLogin = await api.post('/login').send({ username, password, name })
+    const token = JSON.parse(successfulLogin.text).token
+    const newBlog = {
       title: 'JavaScript quirks',
       author: 'Geeky nerds',
       url: 'https://www.js-reexamined.fr'
-    })
-    const savedBlog = await newBlog.save()
-    expect(savedBlog.likes).toBe(0)
+    }
+    const newBlogSaved = await api.post('/api/blogs')
+      .set({ 'Authorization': `Bearer ${token}` })
+      .send(newBlog)
+    expect(JSON.parse(newBlogSaved.text).likes).toBe(0)
   })
 
   test(' if title or url properties are missing, backend responds with 400', async () => {
+    const { username, name, password } = testUsers[1]
+    const successfulLogin = await api.post('/login').send({ username, password, name })
+    const token = JSON.parse(successfulLogin.text).token
     const newBlog = new Blog({
       author: 'Geeky nerds',
       url: 'https://www.js-reexamined.fr'
     })
-
     await api
       .post('/api/blogs')
+      .set({ 'Authorization': `Bearer ${token}` })
       .send(newBlog)
       .expect(400)
     const newBlog2 = new Blog({
@@ -91,6 +118,7 @@ describe('POST /api/blogs', () => {
     })
     await api
       .post('/api/blogs')
+      .set({ 'Authorization': `Bearer ${token}` })
       .send(newBlog2)
       .expect(400)
   })

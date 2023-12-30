@@ -1,10 +1,9 @@
 POST http://localhost:3003/api/blogs
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5vbWlkZGxlbmFtZSIsIm5hbWUiOiJhbm9ueW1vdXMiLCJpYXQiOjE3MDM5Njg5NTAsImV4cCI6MTcwMzk3MjU1MH0.ieaV30Zb2biuVJ9wWUJlv0G710IAJhXtRoiUZlZZbBc
 
-{ 
-    "user": "658fd2c0e1927e3f32ec3aae",
-    "title": "No midle name",
-    "author": "Lee Child",
-    "url": "https://www.actionwriter.fi",
-    "likes": 80
+{
+      "title": "JavaScript quirks",
+      "author": "Geeky nerds",
+      "url": "https://www.js-reexamined.fr"
 }

@@ -5,6 +5,8 @@ module.exports = (error, _request, response, next) => {
     return response.status(400).json({ error: error.message })
   } else if (error.name === 'NonUniqueUserError') {
     return response.status(error.status).json({ error: error.message })
+  } else if (error.name ===  'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+    return response.status(401).json({ error: error.message })
   }
   next(error)
 }
