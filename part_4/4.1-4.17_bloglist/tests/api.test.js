@@ -4,7 +4,9 @@ const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-const testData = require('./testData.json')
+const testBlogs = require('./testBlogs.json')
+const testUsers = require('./testUsers.json')
+
 mongoose.set('bufferTimeoutMS', 30000)
 
 const api = supertest(app)
@@ -12,8 +14,10 @@ const api = supertest(app)
 beforeEach(async () => {
   await Blog.deleteMany({})
   await User.deleteMany({})
-  const testEntries = testData.map(entry => new Blog(entry))
-  await Promise.all(testEntries.map(entry => entry.save()))
+  const blogsForDb = testBlogs.map(entry => new Blog(entry))
+  await Promise.all(blogsForDb.map(entry => entry.save()))
+  const usersForDb = testUsers.map(entry => new User(entry))
+  await Promise.all(usersForDb.map(entry => entry.save()))
 })
 
 
@@ -29,7 +33,7 @@ describe('GET /api/blogs', () => {
     const response = await api
       .get('/api/blogs')
     const blogs = response.body
-    expect(blogs.length).toBe(testData.length)
+    expect(blogs.length).toBe(testBlogs.length)
   })
 
   test('the unique identifier of a blog is the id property', async () => {
@@ -54,7 +58,7 @@ describe('POST /api/blogs', () => {
     await newBlog.save()
     const response = await api
       .get('/api/blogs')
-    expect(response.body.length).toBe(testData.length + 1)
+    expect(response.body.length).toBe(testBlogs.length + 1)
     const titles = response.body.map(r => r.title)
     expect(titles).toContain(newBlog.title)
   })
@@ -98,7 +102,7 @@ describe('DELETE /api/blogs/:id', () => {
     await api.delete(`/api/blogs/${blogToBeDeleted.id}`)
       .expect(204)
     const responseAfter = await api.get('/api/blogs')
-    expect(responseAfter.body.length).toBe(testData.length - 1)
+    expect(responseAfter.body.length).toBe(testBlogs.length - 1)
     expect(responseAfter.body.map(elt => elt.title)).not.toContain(blogToBeDeleted.title)
   })
   test('deleting a malformatted id returns a 400', async () => {
@@ -138,8 +142,8 @@ describe('PUT /api/blogs/:id', () => {
 describe('/api/users', () => {
   test('a user can be created with username, name, password', async () => {
     const newUser = {
-      username: 'pata',
-      name: 'plouf',
+      username: 'patagonia',
+      name: 'plouffy',
       password: '1290bea'
     }
     await api.post('/api/users')
@@ -147,23 +151,11 @@ describe('/api/users', () => {
       .expect(201)
   })
   test('a GET to api/users/ displays all the users', async () => {
-    const newUsers = [{
-      username: 'plouf',
-      name: 'pata',
-      passwordHash: '1290bea'
-    },
-    {
-      username: 'pata',
-      name: 'plouf',
-      passwordHash: '1290bea'
-    }]
-    const usersToSave = newUsers.map(user => new User(user))
-    await Promise.all(usersToSave.map(user => user.save()))
     const response = await api
       .get('/api/users')
       .expect(200)
       .expect('Content-Type', /application\/json/)
-    expect(response.body.length).toBe(2)
+    expect(response.body.length).toBe(testUsers.length)
   })
   test('creating a user without username returns a 400 and a message', async () => {
     const invalidUser = {
@@ -225,5 +217,7 @@ describe('/api/users', () => {
 
 
 afterAll(async () => {
+  await Blog.deleteMany({})
+  await User.deleteMany({})
   await mongoose.connection.close()
 })

@@ -32,7 +32,7 @@ blogRouter.put('/:id', async (request, response) => {
   if (user) {
     const relatedUser = await User.findById(user)
     if (!relatedUser) {
-      throw new BadUpdateError('There is no user with the specified ID.') //this is to avoid that a deleted blog can be re-created by an update
+      throw new BadUpdateError('There is no user with the specified ID.')
     }
     relatedUser.blogs.push(requestedBlog.id)
     await relatedUser.save()

@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const testData = require('./testData.json')
+const testBlogs = require('./testBlogs.json')
 
 describe('total likes', () => {
   const listWithOneBlog = [
@@ -75,7 +75,7 @@ describe('favorite blog', () => {
   })
 
   describe('most prolifc author', () => {
-    const blogList = testData
+    const blogList = testBlogs
     test('returns author with most blogs', () => {
       const mostProlificAuthor = listHelper.mostBlogs(blogList)
       expect(mostProlificAuthor).toEqual({
@@ -86,7 +86,7 @@ describe('favorite blog', () => {
   })
 
   describe('most popular author', () => {
-    const blogList = testData
+    const blogList = testBlogs
     test('returns most popular author name with likes', () => {
       const mostPopularAuthor = listHelper.mostLikes(blogList)
       expect(mostPopularAuthor).toEqual({
