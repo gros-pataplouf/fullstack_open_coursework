@@ -15,8 +15,8 @@ loginRouter.post('/', async (request, response) => {
   if (!passwordMatchesForExistingUser) {
     return response.status(401).send({ 'error' : 'invalid username or password' })
   }
-  const token = jwt.sign({ username, name: matchingUser.name }, SECRET,  { expiresIn: '1h' })
-  return response.status(200).send({ token, username, name: matchingUser.name })
+  const token = jwt.sign({ username, id: matchingUser.id }, SECRET,  { expiresIn: '1h' })
+  return response.status(200).send({ token, username, id: matchingUser.id })
 })
 
 module.exports = loginRouter

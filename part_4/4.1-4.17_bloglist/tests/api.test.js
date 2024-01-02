@@ -4,7 +4,6 @@ const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const HashUser = require('./test_helper')
-
 const testBlogs = require('./testBlogs.json')
 const testUsers = require('./testUsers.json')
 
@@ -126,18 +125,34 @@ describe('POST /api/blogs', () => {
 
 describe('DELETE /api/blogs/:id', () => {
   test('after deletion of valid id, blog list length is decremented by 1', async () => {
+    const { username, name, password } = testUsers[1]
+    const successfulLogin = await api.post('/login').send({ username, password, name })
+    const token = JSON.parse(successfulLogin.text).token
+    const newBlog = {
+      title: 'TDD is hard',
+      author: 'desperatecoder',
+      url: 'https://www.redgreenrefactor.ar'
+    }
+    const blogToBeDeleted = await api
+      .post('/api/blogs')
+      .set({ 'Authorization': `Bearer ${token}` })
+      .send(newBlog)
     const responseBefore = await api
       .get('/api/blogs')
-    const blogToBeDeleted = responseBefore.body[0]
-    await api.delete(`/api/blogs/${blogToBeDeleted.id}`)
+    await api.delete(`/api/blogs/${blogToBeDeleted.body.id}`)
+      .set({ 'Authorization': `Bearer ${token}` })
       .expect(204)
     const responseAfter = await api.get('/api/blogs')
-    expect(responseAfter.body.length).toBe(testBlogs.length - 1)
+    expect(responseAfter.body.length).toBe(responseBefore.body.length - 1)
     expect(responseAfter.body.map(elt => elt.title)).not.toContain(blogToBeDeleted.title)
   })
   test('deleting a malformatted id returns a 400', async () => {
+    const { username, name, password } = testUsers[1]
+    const successfulLogin = await api.post('/login').send({ username, password, name })
+    const token = JSON.parse(successfulLogin.text).token
     const malformattedId = '123-fake-id'
     await api.delete(`/api/blogs/${malformattedId}`)
+      .set({ 'Authorization': `Bearer ${token}` })
       .expect(400)
   })
 })
@@ -265,18 +280,15 @@ describe('/login', () => {
   })
 
   test('sending a POST request to /login with correct username and password returns a token in JSON format and a 200', async () => {
-    const { username, name, password } = testUsers[1]
-    const successfulLogin = await api.post('/login').send({ username, password, name })
+    const { username, password } = testUsers[1]
+    const successfulLogin = await api.post('/login').send({ username, password })
     const desiredResponse = {
       username,
-      name,
       token: expect.stringMatching(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
     }
     expect(successfulLogin.status).toBe(200)
     expect(JSON.parse(successfulLogin.text)).toMatchObject(desiredResponse)
-
   })
-
 })
 
 

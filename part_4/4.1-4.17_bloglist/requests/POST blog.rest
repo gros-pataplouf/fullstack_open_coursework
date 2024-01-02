@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5vbWlkZGxlbmFtZSIsIm5hbWUiOiJhbm9ueW1vdXMiLCJpYXQiOjE3MDM5Njg5NTAsImV4cCI6MTcwMzk3MjU1MH0.ieaV30Zb2biuVJ9wWUJlv0G710IAJhXtRoiUZlZZbBc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5vbWlkZGxlbmFtZSIsImlkIjoiNjU5MTZkYmMyY2VjOTg4YTE4NjA2YTVmIiwiaWF0IjoxNzA0MDI5NjQ4LCJleHAiOjE3MDQwMzMyNDh9.1jgX9a6VakzSG-iq9AoBOvTghwCdz6yHWqaMz5prSN0
 
 {
       "title": "JavaScript quirks",
