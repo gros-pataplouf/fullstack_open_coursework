@@ -1,9 +1,9 @@
 import loginService from '../services/login'
 import usersService from '../services/users'
-
+import Notification from './Notification'
 
 const Login = ({ props }) =>  {
-    const { user, setUser, input, setInput } = props
+    const { user, setUser, input, setInput, message, setMessage } = props
     console.log(user.isLoggedIn)
     const handleLogin = async e => {
         e.preventDefault()
@@ -17,6 +17,11 @@ const Login = ({ props }) =>  {
           }
         } catch (e) {
           console.error(e)
+          setMessage({type: 'warning', text: e.response.data.error})
+          setTimeout(() => {
+            setMessage({type: '', text: ''})
+          }, 2000)
+
 
         }
     }
@@ -47,6 +52,7 @@ const Login = ({ props }) =>  {
         return (
           <div>
             <h2>Log in to application</h2>
+            <Notification message={message}/>
             <form onSubmit={handleLogin}>
               <input type='text' placeholder='username' id='username' name='username' value={input.username} onChange={handleChange('username')}/>
               <label htmlFor='username'>username</label>
