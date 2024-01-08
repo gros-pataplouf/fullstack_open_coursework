@@ -12,8 +12,8 @@ const getAll = async () => {
   return response.data;
 };
 
+
 const create = async (blog) => {
-  console.log(token);
   const response = await axios.post(baseUrl, blog, {
     headers: {
       Authorization: token,
@@ -22,4 +22,9 @@ const create = async (blog) => {
   return response.data;
 };
 
-export default { getAll, create, setToken };
+const like = async (blog) => {
+  const response = await axios.put(`${baseUrl}/${blog.id}`, {author: blog.author, url: blog.url, title: blog.title, likes: blog.likes + 1})
+  return response.data
+}
+
+export default { getAll, create, setToken, like };

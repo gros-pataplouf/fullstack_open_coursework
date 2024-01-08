@@ -34,7 +34,6 @@ const Login = ({ props }) => {
   };
   const handleLogOut = () => {
     window.localStorage.removeItem("blogUser");
-
     setUser(null);
     setInput({
       username: "",
