@@ -5,11 +5,11 @@ import Notification from "./Notification";
 
 const Login = ({ props }) => {
   const { user, setUser } = props;
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState({ username: "", password: "" });
   const [message, setMessage] = useState({
-    type: '', 
-    text: ''
-  })
+    type: "",
+    text: "",
+  });
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -23,8 +23,7 @@ const Login = ({ props }) => {
         isLoggedIn: true,
       };
       setUser(userInState);
-      window.localStorage.setItem("blogUser", JSON.stringify(userInState))
-
+      window.localStorage.setItem("blogUser", JSON.stringify(userInState));
     } catch (e) {
       console.error(e.response.data.error);
       setMessage({ type: "warning", text: e.response.data.error });
@@ -34,7 +33,7 @@ const Login = ({ props }) => {
     }
   };
   const handleLogOut = () => {
-      window.localStorage.removeItem('blogUser');
+    window.localStorage.removeItem("blogUser");
 
     setUser(null);
     setInput({

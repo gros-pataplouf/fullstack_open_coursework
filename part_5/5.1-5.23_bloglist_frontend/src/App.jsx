@@ -1,47 +1,80 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import Login from "./components/Login";
-import BlogForm from "./components/BlogForm";
+import Notification from "./components/Notification";
 import blogsService from "./services/blogs";
+import BlogForm from "./components/BlogForm";
+import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-
+  const [message, setMessage] = useState({
+    type: "",
+    text: "",
+  });
   const [input, setInput] = useState({
     username: "",
     password: "",
   });
 
+  const blogFormRef = useRef();
+
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('blogUser')
+    const loggedUserJSON = window.localStorage.getItem("blogUser");
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogsService.setToken(user.token)
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      blogsService.setToken(user.token);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     blogsService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
-
-
   const addBlog = async (blog) => {
-    const addedBlog = await blogsService.create(blog);
-    await blogsService.getAll().then((blogs) => setBlogs(blogs));
-    return addedBlog;
+    try {
+      const addedBlog = await blogsService.create(blog);
+      setMessage({
+        type: "info",
+        text: `${addedBlog.title} has been added successfully!`,
+      });
+      setTimeout(() => {
+        setMessage({ type: "", text: "" });
+      }, 2000);
+      await blogsService.getAll().then((blogs) => setBlogs(blogs));
+      blogFormRef.current.toggleVisibility();
+      return addedBlog;
+    } catch (e) {
+      console.error(e.response.data.error);
+      setMessage({ type: "warning", text: e.response.data.error });
+      setTimeout(() => {
+        setMessage({ type: "", text: "" });
+      }, 2000);
+    }
+  };
+
+  const blogForm = () => {
+    return (
+      <Togglable
+        buttonShowLabel={"new note"}
+        buttonHideLabel={"cancel"}
+        ref={blogFormRef}
+      >
+        <BlogForm addBlog={addBlog} />
+      </Togglable>
+    );
   };
 
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={message} />
       <Login props={{ user, setUser, input, setInput }} />
-      {user && <BlogForm addBlog={addBlog} />}
+      {user && blogForm()}
 
-      {user &&
-        blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+      {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
 };

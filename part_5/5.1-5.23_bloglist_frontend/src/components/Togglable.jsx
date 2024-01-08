@@ -1,8 +1,17 @@
-const Togglable = (props) => {
-  const { buttonShowLabel, buttonHideLabel, visible, setVisible } = props;
+import { useState, forwardRef, useImperativeHandle } from "react";
+
+// eslint-disable-next-line react/display-name
+const Togglable = forwardRef((props, refs) => {
+  const { buttonShowLabel, buttonHideLabel } = props;
+  const [visible, setVisible] = useState(false);
   const toggleVisibility = () => {
     setVisible(!visible);
   };
+  useImperativeHandle(refs, () => {
+    return {
+      toggleVisibility,
+    };
+  });
   return (
     <div>
       {!visible ? (
@@ -15,6 +24,6 @@ const Togglable = (props) => {
       )}
     </div>
   );
-};
+});
 
 export default Togglable;
