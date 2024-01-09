@@ -79,7 +79,7 @@ const App = () => {
       <Login props={{ user, setUser, input, setInput }} />
       {user && blogForm()}
 
-      {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />)}
+      {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} loggedUserId={user.id} />)}
     </div>
   );
 };
