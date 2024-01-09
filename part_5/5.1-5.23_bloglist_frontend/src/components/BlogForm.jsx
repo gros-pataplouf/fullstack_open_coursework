@@ -1,21 +1,21 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 const BlogForm = ({ addBlog }) => {
   const [newBlog, setNewBlog] = useState({
-    author: "",
-    title: "",
-    url: "",
-  });
+    author: '',
+    title: '',
+    url: '',
+  })
 
   const addNewBlog = async (e) => {
-    e.preventDefault();
-    await addBlog(newBlog);
-    setNewBlog({ author: "", title: "", url: "" });
-  };
+    e.preventDefault()
+    await addBlog(newBlog)
+    setNewBlog({ author: '', title: '', url: '' })
+  }
 
   const handleChange = (property) => (e) => {
-    setNewBlog({ ...newBlog, [property]: e.target.value });
-  };
+    setNewBlog({ ...newBlog, [property]: e.target.value })
+  }
 
   return (
     <>
@@ -27,7 +27,7 @@ const BlogForm = ({ addBlog }) => {
           id="title"
           placeholder="title"
           value={newBlog.title}
-          onChange={handleChange("title")}
+          onChange={handleChange('title')}
         />
         <label htmlFor="title">title</label>
         <input
@@ -36,7 +36,7 @@ const BlogForm = ({ addBlog }) => {
           id="author"
           placeholder="author"
           value={newBlog.author}
-          onChange={handleChange("author")}
+          onChange={handleChange('author')}
         />
         <label htmlFor="author">author</label>
         <input
@@ -45,13 +45,13 @@ const BlogForm = ({ addBlog }) => {
           placeholder="url"
           value={newBlog.url}
           id="url"
-          onChange={handleChange("url")}
+          onChange={handleChange('url')}
         />
         <label htmlFor="url">url</label>
         <button>create</button>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default BlogForm;
+export default BlogForm

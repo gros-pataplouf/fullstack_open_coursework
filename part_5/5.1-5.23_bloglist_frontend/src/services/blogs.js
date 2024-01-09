@@ -1,17 +1,17 @@
-import axios from "axios";
-const baseUrl = "/api/blogs";
+import axios from 'axios'
+const baseUrl = '/api/blogs'
 
-let token = null;
+let token = null
 
 const setToken = (newToken) => {
-  token = `Bearer ${newToken}`;
-};
+  token = `Bearer ${newToken}`
+}
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl);
-  const sortedResponse = response.data.toSorted((a,b)=> b.likes - a.likes)
-  return sortedResponse;
-};
+  const response = await axios.get(baseUrl)
+  const sortedResponse = response.data.toSorted((a,b) => b.likes - a.likes)
+  return sortedResponse
+}
 
 
 const create = async (blog) => {
@@ -19,12 +19,12 @@ const create = async (blog) => {
     headers: {
       Authorization: token,
     },
-  });
-  return response.data;
-};
+  })
+  return response.data
+}
 
 const like = async (blog) => {
-  const response = await axios.put(`${baseUrl}/${blog.id}`, {author: blog.author, url: blog.url, title: blog.title, likes: blog.likes + 1})
+  const response = await axios.put(`${baseUrl}/${blog.id}`, { author: blog.author, url: blog.url, title: blog.title, likes: blog.likes + 1 })
   return response.data
 }
 
@@ -33,10 +33,10 @@ const remove = async (blog) => {
   const response = await axios.delete(`${baseUrl}/${blog.id}`, {
     headers: {
       Authorization: token,
-    }})
-    console.log(('remove response', response))
-  
+    } })
+  console.log(('remove response', response))
+
   return response.data
 }
 
-export default { getAll, create, setToken, like, remove };
+export default { getAll, create, setToken, like, remove }
