@@ -38,6 +38,19 @@ const App = () => {
 
   }, [])
 
+  const likeBlog = async (blog) => {
+    await blogsService.like(blog)
+    const blogs = await blogsService.getAll()
+    setBlogs(blogs)
+  }
+  const removeBlog = async (blog) => {
+    if (window.confirm(`Are you sure to remove ${blog.title} by ${blog.author}?`)) {
+      await blogsService.remove(blog)
+      const blogs = await blogsService.getAll()
+      setBlogs(blogs)
+    }
+  }
+
   const addBlog = async (blog) => {
     try {
       const addedBlog = await blogsService.create(blog)
@@ -79,7 +92,7 @@ const App = () => {
       <Login props={{ user, setUser, input, setInput }} />
       {user && blogForm()}
 
-      {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} loggedUserId={user.id} />)}
+      {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} loggedUserId={user.id} likeBlog={likeBlog} removeBlog={removeBlog} />)}
     </div>
   )
 }

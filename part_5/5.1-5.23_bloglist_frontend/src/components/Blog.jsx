@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogsService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs, loggedUserId }) => {
+const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 20,
@@ -41,17 +41,12 @@ const Blog = ({ blog, setBlogs, loggedUserId }) => {
   const [showDetails, setShowDetails] = useState(false)
   const toggleDetails = () => setShowDetails(!showDetails)
   const handleLike = async () => {
-    await blogsService.like(blog)
-    const blogs = await blogsService.getAll()
-    setBlogs(blogs)
+    await likeBlog(blog)
   }
   const handleRemove = async () => {
-    if (window.confirm(`Are you sure to remove ${blog.title} by ${blog.author}?`)) {
-      await blogsService.remove(blog)
-      const blogs = await blogsService.getAll()
-      setBlogs(blogs)
-    }
+    await removeBlog(blog)
   }
+
   const removeButton = () => {
     if (loggedUserId === blog.user.id) {
       return <button style={removeButtonStyle} onClick={handleRemove}>remove</button>
@@ -60,16 +55,16 @@ const Blog = ({ blog, setBlogs, loggedUserId }) => {
   return showDetails ? (
     <div style={blogStyle}>
       <div style={flexStyle}>
-        <p>
+        <p data-testid="blog-by-author">
           {blog.title} by {blog.author}
         </p>
         <button onClick={toggleDetails} style={buttonStyle}>
             hide
         </button>
       </div>
-      <p>{blog.url}</p>
+      <p data-testid="url">{blog.url}</p>
       <div style={flexStyle}>
-        <p>likes {blog.likes}</p> <button style={buttonStyle} onClick={handleLike}>like</button>
+        <p data-testid="likes">likes {blog.likes}</p> <button style={buttonStyle} onClick={handleLike} data-testid="like-button">like</button>
       </div>
       <p>{blog.user.name}</p>
       {removeButton()}
@@ -77,16 +72,15 @@ const Blog = ({ blog, setBlogs, loggedUserId }) => {
   ) : (
     <div style={blogStyle}>
       <div style={flexStyle}>
-        <p>
+        <p data-testid="blog-by-author">
           {blog.title} by {blog.author}
         </p>
-        <button onClick={toggleDetails} style={buttonStyle}>
-            view
+        <button onClick={toggleDetails} style={buttonStyle} data-testid='view-button'>
+            view,
         </button>
       </div>
     </div>
   )
-
 }
 
 export default Blog
