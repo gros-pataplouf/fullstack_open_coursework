@@ -50,12 +50,13 @@ const Login = ({ props }) => {
       <div>
         <h2>Log in to application</h2>
         {message.text && <Notification message={message} />}
-        <form onSubmit={handleLogin}>
+        <form data-testid="login-form" onSubmit={handleLogin}>
           <input
             type="text"
             placeholder="username"
             id="username"
             name="username"
+            data-testid="login-username"
             value={input.username}
             onChange={handleChange('username')}
           />
@@ -67,6 +68,7 @@ const Login = ({ props }) => {
             name="password"
             value={input.password}
             onChange={handleChange('password')}
+            data-testid="login-password"
           />
           <label htmlFor="password">password</label>
           <button>Log in</button>

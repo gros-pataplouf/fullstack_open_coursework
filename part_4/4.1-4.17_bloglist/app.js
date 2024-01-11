@@ -20,6 +20,13 @@ app.use(express.json())
 app.use('/api/users', userRouter)
 app.use('/login', loginRouter)
 app.use('/api/blogs', blogRouter)
+
+if (process.env.NODE_ENV === 'test') {
+  console.log('running in test mode')
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
+
 app.use(errorHandler)
 
 module.exports = app
