@@ -49,7 +49,7 @@ const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
 
   const removeButton = () => {
     if (loggedUserId === blog.user.id) {
-      return <button style={removeButtonStyle} onClick={handleRemove}>remove</button>
+      return <button style={removeButtonStyle} onClick={handleRemove} data-testid="delete-button">remove</button>
 
     }}
   return (
@@ -68,7 +68,7 @@ const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
           <div style={flexStyle}>
             <p data-testid="likes">likes {blog.likes}</p> <button style={buttonStyle} onClick={handleLike} data-testid="like-button">like</button>
           </div>
-          <p>{blog.user.name}</p>
+          <p data-testid="blog-user-name">{blog.user.name}</p>
           {removeButton()}
         </>
       ) : (
