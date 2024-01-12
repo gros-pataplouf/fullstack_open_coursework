@@ -52,35 +52,36 @@ const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
       return <button style={removeButtonStyle} onClick={handleRemove}>remove</button>
 
     }}
-  return showDetails ? (
-    <div style={blogStyle}>
-      <div style={flexStyle}>
-        <p data-testid="blog-by-author">
-          {blog.title} by {blog.author}
-        </p>
-        <button onClick={toggleDetails} style={buttonStyle}>
+  return (
+    <div data-testid="blog" style={blogStyle}>
+      {showDetails ? (
+        <>
+          <div style={flexStyle}>
+            <p data-testid="blog-by-author">
+              {blog.title} by {blog.author}
+            </p>
+            <button onClick={toggleDetails} style={buttonStyle}>
             hide
-        </button>
-      </div>
-      <p data-testid="url">{blog.url}</p>
-      <div style={flexStyle}>
-        <p data-testid="likes">likes {blog.likes}</p> <button style={buttonStyle} onClick={handleLike} data-testid="like-button">like</button>
-      </div>
-      <p>{blog.user.name}</p>
-      {removeButton()}
-    </div>
-  ) : (
-    <div style={blogStyle}>
-      <div style={flexStyle}>
-        <p data-testid="blog-by-author">
-          {blog.title} by {blog.author}
-        </p>
-        <button onClick={toggleDetails} style={buttonStyle} data-testid='view-button'>
-            view,
-        </button>
-      </div>
-    </div>
-  )
+            </button>
+          </div>
+          <p data-testid="url">{blog.url}</p>
+          <div style={flexStyle}>
+            <p data-testid="likes">likes {blog.likes}</p> <button style={buttonStyle} onClick={handleLike} data-testid="like-button">like</button>
+          </div>
+          <p>{blog.user.name}</p>
+          {removeButton()}
+        </>
+      ) : (
+        <div style={flexStyle}>
+          <p data-testid="blog-by-author">
+            {blog.title} by {blog.author}
+          </p>
+          <button onClick={toggleDetails} style={buttonStyle} data-testid='view-button'>
+            view
+          </button>
+        </div>
+      )}
+    </div>)
 }
 
 export default Blog

@@ -71,7 +71,7 @@ const Login = ({ props }) => {
             data-testid="login-password"
           />
           <label htmlFor="password">password</label>
-          <button>Log in</button>
+          <button data-testid="login-button">Log in</button>
         </form>
       </div>
     )
