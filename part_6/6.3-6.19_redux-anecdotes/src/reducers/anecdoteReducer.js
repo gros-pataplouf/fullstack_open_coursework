@@ -9,7 +9,7 @@ const anecdoteSlice = createSlice({
   initialState, 
   reducers: {
     setAnecdotes(state, action) {
-      return action.payload
+      return action.payload.toSorted((a, b) => b.votes - a.votes)
     },
     addAnecdote(state, action){
       console.log(action.payload)
