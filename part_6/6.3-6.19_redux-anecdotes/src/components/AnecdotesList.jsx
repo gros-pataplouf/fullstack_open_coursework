@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { upvoteAction } from "../reducers/anecdoteReducer";
+import { upvote } from "../reducers/anecdoteReducer";
+import { setMessage, removeMessage } from "../reducers/messageReducer";
+
 
 const AnecdotesList = () => {
   const anecdotes = useSelector(state => { 
@@ -11,7 +13,12 @@ const AnecdotesList = () => {
   const dispatch = useDispatch();
 
   const vote = (id) => {
-    dispatch(upvoteAction(id));
+    dispatch(upvote(id));
+    const upvotedAnecdote = anecdotes.find(anecdote => anecdote.id === id)
+    dispatch(setMessage(`You voted "${upvotedAnecdote.content}". `))
+    setTimeout(() => {
+      dispatch(removeMessage())
+    }, 5000)
   };
   return anecdotes.map((anecdote) => (
     <div key={anecdote.id}>
