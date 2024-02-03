@@ -1,0 +1,174 @@
+<mxfile host="app.diagrams.net" modified="2024-02-03T12:56:20.307Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="YppcQObVgtWMyJ5h0CQJ" version="23.0.2" type="device" pages="3">
+  <diagram name="one reducer" id="-ifX_ycqT7Z22HPUXfNo">
+    <mxGraphModel dx="437" dy="474" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="q0RddXcgE35KxssvkxUb-9" value="REDUCER" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="115" y="30" width="250" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-10" value="actionCreator1, actionCreator2 (which action to create, returns action type and forwards payload)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="q0RddXcgE35KxssvkxUb-9" vertex="1">
+          <mxGeometry y="30" width="250" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-11" value="reducer(state, action) {determines how state changes according to action and returns new state}&amp;nbsp;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="q0RddXcgE35KxssvkxUb-9" vertex="1">
+          <mxGeometry y="80" width="250" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-13" value="STORE" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="115" y="210" width="250" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-19" value="import {createStore} from redux&lt;br&gt;store = createStore(REDUCER)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="q0RddXcgE35KxssvkxUb-13" vertex="1">
+          <mxGeometry y="30" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-15" value="store.dispatch(actionCreator(payload))" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="q0RddXcgE35KxssvkxUb-13" vertex="1">
+          <mxGeometry y="60" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-16" value="import {Provider} from &#39;react-redux&#39;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="120" y="370" width="250" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-17" value="main.jsx: &amp;lt;Provider store={store}&amp;gt; &amp;lt;App/&amp;gt; &amp;lt;/Provider&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="q0RddXcgE35KxssvkxUb-16" vertex="1">
+          <mxGeometry y="30" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="q0RddXcgE35KxssvkxUb-19" target="q0RddXcgE35KxssvkxUb-17" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-21" value="COMPONENT" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="414" y="240" width="250" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-23" value="store.dispatch(actionCreator(payload)))" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="q0RddXcgE35KxssvkxUb-21" vertex="1">
+          <mxGeometry y="30" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="q0RddXcgE35KxssvkxUb-23" target="q0RddXcgE35KxssvkxUb-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="q0RddXcgE35KxssvkxUb-9" target="q0RddXcgE35KxssvkxUb-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="q0RddXcgE35KxssvkxUb-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="q0RddXcgE35KxssvkxUb-10" target="q0RddXcgE35KxssvkxUb-21" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="combined reducers" id="gZ_yaxfJNACwnI5vibeM">
+    <mxGraphModel dx="437" dy="1643" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-0" />
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-1" parent="xPcH2D4yLKPLg_RsqS-A-0" />
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-5" value="STORE" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="xPcH2D4yLKPLg_RsqS-A-1" vertex="1">
+          <mxGeometry x="197.5" y="100" width="265" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-6" value="import {createStore} from redux&lt;br&gt;store = createStore(reducer)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="xPcH2D4yLKPLg_RsqS-A-5" vertex="1">
+          <mxGeometry y="30" width="265" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-7" value="store.dispatch(actionCreator(payload))" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="xPcH2D4yLKPLg_RsqS-A-5" vertex="1">
+          <mxGeometry y="60" width="265" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-8" value="import {Provider} from &#39;react-redux&#39;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="xPcH2D4yLKPLg_RsqS-A-1" vertex="1">
+          <mxGeometry x="90" y="380" width="250" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-9" value="main.jsx: &amp;lt;Provider store={store}&amp;gt; &amp;lt;App/&amp;gt; &amp;lt;/Provider&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="xPcH2D4yLKPLg_RsqS-A-8" vertex="1">
+          <mxGeometry y="30" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="xPcH2D4yLKPLg_RsqS-A-1" source="xPcH2D4yLKPLg_RsqS-A-6" target="xPcH2D4yLKPLg_RsqS-A-9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-11" value="COMPONENT" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="xPcH2D4yLKPLg_RsqS-A-1" vertex="1">
+          <mxGeometry x="570" y="80" width="256" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-14" value="const state = useSelector(state =&amp;gt; state.reducerOne) (no component needs the entire state)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="xPcH2D4yLKPLg_RsqS-A-11" vertex="1">
+          <mxGeometry y="30" width="256" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-12" value="store.dispatch(actionCreator(payload)))" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="xPcH2D4yLKPLg_RsqS-A-11" vertex="1">
+          <mxGeometry y="80" width="256" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="xPcH2D4yLKPLg_RsqS-A-1" source="xPcH2D4yLKPLg_RsqS-A-12" target="xPcH2D4yLKPLg_RsqS-A-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="xPcH2D4yLKPLg_RsqS-A-1" source="cWJqP9OxTw3TqHWWN4zF-5" target="xPcH2D4yLKPLg_RsqS-A-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-5" value="COMBINED REDUCERS" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="xPcH2D4yLKPLg_RsqS-A-1" vertex="1">
+          <mxGeometry x="40" y="-310" width="580" height="340" as="geometry">
+            <mxRectangle x="90" y="-170" width="180" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-9" value="HOW TO CREATE A COMBINED REDUCER" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="cWJqP9OxTw3TqHWWN4zF-5" vertex="1">
+          <mxGeometry y="30" width="580" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-10" value="import {combineReducers} from &#39;redux&#39;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="cWJqP9OxTw3TqHWWN4zF-9" vertex="1">
+          <mxGeometry y="30" width="580" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-11" value="const reducer = combineReducers({ reducerOne: REDUCER1, reducerTwo: REDUCER2})" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="cWJqP9OxTw3TqHWWN4zF-9" vertex="1">
+          <mxGeometry y="80" width="580" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-2" value="REDUCER 1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="cWJqP9OxTw3TqHWWN4zF-5" vertex="1">
+          <mxGeometry y="170" width="580" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-3" value="actionCreator1, actionCreator2 (which action to create, returns action type and forwards payload)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="xPcH2D4yLKPLg_RsqS-A-2" vertex="1">
+          <mxGeometry y="30" width="580" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xPcH2D4yLKPLg_RsqS-A-4" value="reducer(state, action) {determines how state changes according to action and returns new state}&amp;nbsp;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="xPcH2D4yLKPLg_RsqS-A-2" vertex="1">
+          <mxGeometry y="80" width="580" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-0" value="REDUCER 2" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=1;" parent="xPcH2D4yLKPLg_RsqS-A-2" vertex="1" collapsed="1">
+          <mxGeometry y="140" width="580" height="30" as="geometry">
+            <mxRectangle y="140" width="580" height="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-1" value="actionCreators" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="cWJqP9OxTw3TqHWWN4zF-0" vertex="1">
+          <mxGeometry y="30" width="580" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cWJqP9OxTw3TqHWWN4zF-2" value="reducer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="cWJqP9OxTw3TqHWWN4zF-0" vertex="1">
+          <mxGeometry y="80" width="580" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="mcP4PgtjGq7uDAyYhdH5" name="REDUX TOOLKIT">
+    <mxGraphModel dx="437" dy="474" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5IMLKY9Rq9tRTQHUGDpo-1" value="&lt;h1&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;HOW TO REDUX TOOLKIT&lt;/span&gt;&lt;/h1&gt;&lt;h1&gt;&lt;span style=&quot;background-color: initial; font-size: 12px; font-weight: normal;&quot;&gt;npm install @reduxjs/toolkit&lt;/span&gt;&lt;br&gt;&lt;/h1&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial; font-size: 12px; font-weight: normal;&quot;&gt;in main.jsx:&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial; font-size: 12px; font-weight: normal;&quot;&gt;import {configureStore} from &#39;@reduxjs/toolkit&#39;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial; font-size: 12px; font-weight: normal;&quot;&gt;const store = configureStore({&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial; font-size: 12px; font-weight: normal;&quot;&gt;reducer: {&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial; font-size: 12px; font-weight: normal;&quot;&gt;reducer1: reducer1,&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial; font-size: 12px; font-weight: normal;&quot;&gt;reducer2: reducer2}})&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="260" y="40" width="310" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-1" value="Advantages:&lt;br&gt;- no need to combine reducers&lt;br&gt;- createSlice creates the reducer and its related actions.&lt;br&gt;attributes:&lt;br&gt;name =&amp;gt; action.type will be name/reducerName. Must be unique&lt;br&gt;&amp;nbsp; initialState, reducers&amp;nbsp; &amp;nbsp;&lt;br&gt;- state can be mutated directly because Redux Toolkit uses Immer under the hood" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="680" y="40" width="200" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-2" value="const appSlice = createSlice({&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;name: app, &lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;initialState, &lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;reducers: {&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;reducerOne(state, action){&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;get action.payload, mutate the state directly or return a &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;new state}}&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;})&lt;br&gt;&lt;br&gt;export default appSlice.reducer (SINGULAR)&lt;br&gt;export const { reducerOne, ... } = appSlice.actions" style="rounded=1;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="270" y="320" width="360" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-3" value="REDUCER" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="397" y="330" width="106" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-5" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="300" width="413" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-6" value="COMPONENT" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="827" y="320" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0epgoZh9JZIffl3Odksu-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="875" y="450" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="875" y="440" />
+              <mxPoint x="876" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-7" value="dispatch(actionName(payload))" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="770" y="380" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-9" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/CrystalClear/48x48/actions/agt_action_fail.png" vertex="1" parent="1">
+          <mxGeometry x="1027" y="378" width="34" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-12" value="&lt;br&gt;dispatch({&lt;span style=&quot;background-color: initial;&quot;&gt;type: &#39;name/actionName, payload})&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="767" y="454" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0epgoZh9JZIffl3Odksu-14" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn3.iconfinder.com/data/icons/miscellaneous-80/60/check-128.png" vertex="1" parent="1">
+          <mxGeometry x="1030" y="466" width="28" height="28" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
