@@ -9,7 +9,9 @@ const getAll = async () => {
 }
 
 const create = async (anecdoteText) => {
+    console.log("running create method")
     const anecdote = await axios.post(baseUrl, {content: anecdoteText, votes: 0, id: (100000 * Math.random()).toFixed(0)})
+    console.log(anecdoteText, anecdote)
     return anecdote
 }
 
