@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { upvote, initializeAnecdotes } from "../reducers/anecdoteReducer";
+import { upvoteAnecdote, initializeAnecdotes } from "../reducers/anecdoteReducer";
 import { setMessage, removeMessage } from "../reducers/messageReducer";
 import { anecdotesService } from "../services/anecdotes";
 
@@ -14,10 +14,8 @@ const AnecdotesList = () => {
     }
 );
   const vote = async (id) => {
-    console.log(id)
-    dispatch(upvote(id));
-    await anecdotesService.upvote(id)
-    const upvotedAnecdote = anecdotes.find(anecdote => anecdote.id === id)
+    dispatch(upvoteAnecdote(id));
+    const upvotedAnecdote = await anecdotesService.upvote(id)
 
     dispatch(setMessage(`You voted "${upvotedAnecdote.content}". `))
     setTimeout(() => {
