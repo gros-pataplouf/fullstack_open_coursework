@@ -38,7 +38,7 @@
     {
       "id": "77350",
       "content": "First, solve the problem. Then, write the code",
-      "votes": 16
+      "votes": 18
     },
     {
       "id": "24641",
@@ -68,6 +68,11 @@
     {
       "id": "34407",
       "content": "Any sufficiently advanced incompetence is indistinguishable from malice.",
+      "votes": 1
+    },
+    {
+      "id": "61977",
+      "content": "You never change things by fighting the existing reality. To change something, build a new model that makes the existing model obsolete.",
       "votes": 1
     }
   ]

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { upvoteAnecdote, initializeAnecdotes } from "../reducers/anecdoteReducer";
-import { setMessage, removeMessage } from "../reducers/messageReducer";
+import { setNotification } from "../reducers/messageReducer";
 import { anecdotesService } from "../services/anecdotes";
 
 const AnecdotesList = () => {
@@ -17,10 +17,8 @@ const AnecdotesList = () => {
     dispatch(upvoteAnecdote(id));
     const upvotedAnecdote = await anecdotesService.upvote(id)
 
-    dispatch(setMessage(`You voted "${upvotedAnecdote.content}". `))
-    setTimeout(() => {
-      dispatch(removeMessage())
-    }, 5000)
+    dispatch(setNotification(`You voted "${upvotedAnecdote.content}". `, 5))
+
   };
   return anecdotes.map((anecdote) => (
     <div key={anecdote.id}>
