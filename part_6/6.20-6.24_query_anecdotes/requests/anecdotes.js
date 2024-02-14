@@ -7,3 +7,6 @@ export const getAnecdotes = () => axios.get(baseUrl)
 
 export const createAnecdote = (anecdoteText) => axios.post(baseUrl, {content: anecdoteText, votes: 0, id: (100000 * Math.random()).toFixed(0)})
 .then(res => res.data)
+
+export const voteAnecdote = (anecdote) => axios.put(`${baseUrl}/${anecdote.id}`, {...anecdote, votes: anecdote.votes + 1})
+.then(res => res.data)

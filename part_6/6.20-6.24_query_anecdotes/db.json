@@ -3,42 +3,87 @@
     {
       "content": "If it hurts, do it more often",
       "id": "47145",
-      "votes": 0
+      "votes": 2
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
       "id": "21149",
-      "votes": 0
+      "votes": 3
     },
     {
-      "content": "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
+      "content": "The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
       "id": "69581",
-      "votes": 0
+      "votes": 2
     },
     {
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
       "id": "36975",
-      "votes": 0
+      "votes": 3
     },
     {
       "content": "Premature optimization is the root of all evil.",
       "id": "25170",
-      "votes": 0
+      "votes": 7
     },
     {
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
       "id": "98312",
-      "votes": 0
+      "votes": 2
     },
     {
-      "content": "testlùlkùmlk",
-      "votes": 0,
-      "id": "43388"
+      "id": "44421",
+      "content": "Making Django and React work together is like putting a crocodile and a gorilla in a room and expecting them to shake hands.",
+      "votes": 5
     },
     {
-      "content": "test2",
+      "id": "77350",
+      "content": "First, solve the problem. Then, write the code",
+      "votes": 18
+    },
+    {
+      "id": "24641",
+      "content": "Java is to JavaScript what car is to Carpet.",
+      "votes": 1
+    },
+    {
+      "id": "90465",
+      "content": "Code is like humor. When you have to explain it, it’s bad.",
+      "votes": 3
+    },
+    {
+      "id": "70898",
+      "content": "Theory is when you know something, but it does not work. Practice is if something works, but you don't know why. Programmers combine theory and practice: nothing works, and they don't know why.",
+      "votes": 2
+    },
+    {
+      "id": "44827",
+      "content": "Should array indices start at 0 or 1? My compromise of 0.5 was rejected without, I thought, proper consideration.",
+      "votes": 1
+    },
+    {
+      "id": "96818",
+      "content": "An estimate is the most optimistic prediction that has a non-zero probability of coming true . . . Accepting this definition leads irrevocably toward a method called 'what’s-the-earliest-date-by-which-you-can’t-prove-you-won’t-be-finished estimating.",
+      "votes": 2
+    },
+    {
+      "id": "34407",
+      "content": "Any sufficiently advanced incompetence is indistinguishable from malice.",
+      "votes": 1
+    },
+    {
+      "id": "61977",
+      "content": "You never change things by fighting the existing reality. To change something, build a new model that makes the existing model obsolete.",
+      "votes": 1
+    },
+    {
+      "content": "The most dangerous phrase in the language is, ‘We’ve always done it this way.",
       "votes": 0,
-      "id": "25110"
+      "id": "96598"
+    },
+    {
+      "content": "Curse of the self-taught: fear that you know only points here and there, islands of knowledge, and between them are chasms into which you will fall in humiliating failure, a fear that followed me from the first time I learned how to code.",
+      "votes": 0,
+      "id": "86130"
     }
   ]
 }
