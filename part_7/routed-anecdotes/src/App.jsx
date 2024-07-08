@@ -74,6 +74,12 @@ const CreateNew = (props) => {
   const info = useField('url')
   const {notification, setNotification} = props
   const navigate = useNavigate()
+  const handleReset = (e) => {
+    e.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
+  }
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
@@ -104,6 +110,7 @@ const CreateNew = (props) => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
