@@ -8,12 +8,20 @@ export const useField = (type) => {
     const reset = () => {
         setValue('')
     }
+    const fieldAttrs = () => {
+        return {
+            type,
+            value,
+            onChange
+        }
+    }
 
 
     return {
         type, 
         value,
         onChange,
-        reset 
+        reset,
+        fieldAttrs
     }
 }
