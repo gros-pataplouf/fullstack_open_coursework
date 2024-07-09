@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 
 const useField = (type) => {
   const [value, setValue] = useState('')
@@ -16,14 +15,33 @@ const useField = (type) => {
 }
 
 const useCountry = (name) => {
-  const [country, setCountry] = useState(null)
-
-  useEffect(() => {})
+  const [country, setCountry] = useState({})
+  console.log("20", name)
+  useEffect(() => {
+    fetch(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`)
+    .then((response) => response.json())
+    .then(data => {
+      const newCountry = {
+        data: {
+          name: data.name.common,
+          capital: data.capital[0],
+          population: data.population,
+          flag: data.flags.png
+        },
+        found: true
+      }
+      setCountry(newCountry)
+    }
+    )
+    .catch(setCountry({found: false}))
+  }, [name])
+  console.log(country)
 
   return country
 }
 
 const Country = ({ country }) => {
+  console.log("Country", country)
   if (!country) {
     return null
   }
@@ -50,6 +68,7 @@ const App = () => {
   const nameInput = useField('text')
   const [name, setName] = useState('')
   const country = useCountry(name)
+  console.log("App country", country)
 
   const fetch = (e) => {
     e.preventDefault()
