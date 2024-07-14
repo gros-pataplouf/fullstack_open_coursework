@@ -16,7 +16,6 @@ export const useField = (type) => {
         }
     }
 
-
     return {
         type, 
         value,
