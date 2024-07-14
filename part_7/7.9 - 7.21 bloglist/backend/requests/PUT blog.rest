@@ -1,0 +1,11 @@
+PUT http://localhost:3003/api/blogs/658fcc24dd1168c366470749
+content-type: application/json
+
+
+{
+    "title":"Le tact de la trotteuse...",
+    "author":"Valérie Paccaud",
+    "url":"https://www.latchaux.ch",
+    "likes":23
+
+}
