@@ -2,6 +2,7 @@ import { useState } from 'react'
 import loginService from '../services/login'
 import usersService from '../services/users'
 import Notification from './Notification'
+import { store } from '../reducers/notificationReducer'
 
 const Login = ({ props }) => {
   const { user, setUser } = props
@@ -26,9 +27,9 @@ const Login = ({ props }) => {
       window.localStorage.setItem('blogUser', JSON.stringify(userInState))
     } catch (e) {
       console.error(e.response.data.error)
-      setMessage({ type: 'warning', text: e.response.data.error })
+      store.dispatch({type:'SET', payload: { type: 'warning', text: e.response.data.error }})
       setTimeout(() => {
-        setMessage({ type: '', text: '' })
+        store.dispatch({type: 'RESET'})
       }, 2000)
     }
   }
@@ -49,7 +50,7 @@ const Login = ({ props }) => {
     return (
       <div>
         <h2>Log in to application</h2>
-        {message.text && <Notification message={message} />}
+        {message.text && <Notification message={store.getState()} />}
         <form data-testid="login-form" onSubmit={handleLogin}>
           <input
             type="text"
