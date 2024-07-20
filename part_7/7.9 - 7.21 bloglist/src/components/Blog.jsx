@@ -1,57 +1,65 @@
-import { useState } from 'react'
-import blogsService from '../services/blogs'
+import { useState } from "react";
+import blogsService from "../services/blogs";
 
 const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 20,
     paddingBottom: 5,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
     marginBottom: 10,
     borderRadius: 8,
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-  }
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  };
 
   const flexStyle = {
-    display: 'flex',
-    alignItems: 'center',
-  }
+    display: "flex",
+    alignItems: "center",
+  };
 
   const buttonStyle = {
     marginLeft: 15,
-    height: 'min-content',
-    padding: '8px 12px',
-    backgroundColor: '#3498DB',
-    color: 'white',
-    border: 'none',
+    height: "min-content",
+    padding: "8px 12px",
+    backgroundColor: "#3498DB",
+    color: "white",
+    border: "none",
     borderRadius: 4,
-    cursor: 'pointer',
-    transition: 'background-color 0.3s',
-  }
+    cursor: "pointer",
+    transition: "background-color 0.3s",
+  };
 
   const removeButtonStyle = {
-    backgroundColor: '#FF5722',
-    padding: '8px 12px',
-    color: 'white',
-    border: 'none',
+    backgroundColor: "#FF5722",
+    padding: "8px 12px",
+    color: "white",
+    border: "none",
     borderRadius: 4,
-  }
+  };
 
-  const [showDetails, setShowDetails] = useState(false)
-  const toggleDetails = () => setShowDetails(!showDetails)
+  const [showDetails, setShowDetails] = useState(false);
+  const toggleDetails = () => setShowDetails(!showDetails);
   const handleLike = async () => {
-    await likeBlog(blog)
-  }
+    await likeBlog(blog);
+  };
   const handleRemove = async () => {
-    await removeBlog(blog)
-  }
+    await removeBlog(blog);
+  };
 
   const removeButton = () => {
     if (loggedUserId === blog.user.id) {
-      return <button style={removeButtonStyle} onClick={handleRemove} data-testid="delete-button">remove</button>
-
-    }}
+      return (
+        <button
+          style={removeButtonStyle}
+          onClick={handleRemove}
+          data-testid="delete-button"
+        >
+          remove
+        </button>
+      );
+    }
+  };
   return (
     <div data-testid="blog" style={blogStyle}>
       {showDetails ? (
@@ -61,12 +69,19 @@ const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
               {blog.title} by {blog.author}
             </p>
             <button onClick={toggleDetails} style={buttonStyle}>
-            hide
+              hide
             </button>
           </div>
           <p data-testid="url">{blog.url}</p>
           <div style={flexStyle}>
-            <p data-testid="likes">likes {blog.likes}</p> <button style={buttonStyle} onClick={handleLike} data-testid="like-button">like</button>
+            <p data-testid="likes">likes {blog.likes}</p>{" "}
+            <button
+              style={buttonStyle}
+              onClick={handleLike}
+              data-testid="like-button"
+            >
+              like
+            </button>
           </div>
           <p data-testid="blog-user-name">{blog.user.name}</p>
           {removeButton()}
@@ -76,12 +91,17 @@ const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
           <p data-testid="blog-by-author">
             {blog.title} by {blog.author}
           </p>
-          <button onClick={toggleDetails} style={buttonStyle} data-testid='view-button'>
+          <button
+            onClick={toggleDetails}
+            style={buttonStyle}
+            data-testid="view-button"
+          >
             view
           </button>
         </div>
       )}
-    </div>)
-}
+    </div>
+  );
+};
 
-export default Blog
+export default Blog;
