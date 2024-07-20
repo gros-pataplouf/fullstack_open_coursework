@@ -9,6 +9,12 @@ blogRouter.get('/', async (_request, response) => {
   response.json(blogs)
 })
 
+blogRouter.get('/:id', async (request, response) => {
+  const blog = await Blog.findById(request.params.id).populate('user', { 'username': 1, 'name': 1 })
+  console.log(blog)
+  response.json(blog)
+})
+
 blogRouter.post('/', authExtractor, async (request, response) => {
   const relatedUser = await User.findById(request.authorizedUserId)
   const blog = new Blog({ ...request.body, user: relatedUser.id })

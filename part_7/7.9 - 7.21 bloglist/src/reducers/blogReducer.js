@@ -9,8 +9,11 @@ const blogsSlice = createSlice({
     setBlogs(state, action) {
       return action.payload;
     },
+    deleteBlog(state, action) {
+      return state.filter(blog => blog.id !== action.payload)
+    }
   },
 });
 
-export const { setBlogs } = blogsSlice.actions;
+export const { setBlogs, deleteBlog } = blogsSlice.actions;
 export default blogsSlice.reducer;

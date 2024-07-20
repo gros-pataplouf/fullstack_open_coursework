@@ -13,7 +13,15 @@ const getAll = async () => {
   return sortedResponse;
 };
 
+const getOne = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`);
+  return response.data;
+
+};
+
+
 const create = async (blog) => {
+  console.log("token while creating", token)
   const response = await axios.post(baseUrl, blog, {
     headers: {
       Authorization: token,
@@ -44,4 +52,4 @@ const remove = async (blog) => {
   return response.data;
 };
 
-export default { getAll, create, setToken, like, remove };
+export default { getAll, getOne, create, setToken, like, remove };

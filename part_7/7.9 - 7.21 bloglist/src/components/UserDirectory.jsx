@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDirectory } from "../reducers/userDirectoryReducer";
 import userService from "../services/users";
@@ -25,8 +26,10 @@ function UserDirectory() {
           </thead>
           <tbody>
             {userDirectory.map((user) => (
-              <tr>
-                <td>{user.name}</td>
+              <tr key={user.id}>
+                <td>
+                  <Link to={user.id}>{user.name}</Link>
+                </td>
                 <td>{user.blogs.length}</td>
               </tr>
             ))}

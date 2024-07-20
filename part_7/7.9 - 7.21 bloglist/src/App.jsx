@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createNotification,
@@ -12,6 +11,7 @@ import { setUser, logout } from "./reducers/userReducer";
 import Blog from "./components/Blog";
 import Login from "./components/Login";
 import UserDirectory from "./components/UserDirectory";
+import User from "./components/User";
 import Notification from "./components/Notification";
 import blogsService from "./services/blogs";
 import BlogForm from "./components/BlogForm";
@@ -29,12 +29,11 @@ const App = () => {
   const blogFormRef = useRef();
 
   useEffect(() => {
-    console.log("hello user", user);
     const loggedUserJSON = window.localStorage.getItem("blogUser");
     if (loggedUserJSON) {
       const loggedUser = JSON.parse(loggedUserJSON);
       dispatch(setUser(loggedUser));
-      blogsService.setToken(user.token);
+      blogsService.setToken(loggedUser.token);
     }
   }, []);
 
@@ -46,20 +45,6 @@ const App = () => {
     getBlogs();
   }, []);
 
-  const likeBlog = async (blog) => {
-    await blogsService.like(blog);
-    const blogs = await blogsService.getAll();
-    dispatch(setBlogs(blogs));
-  };
-  const removeBlog = async (blog) => {
-    if (
-      window.confirm(`Are you sure to remove ${blog.title} by ${blog.author}?`)
-    ) {
-      await blogsService.remove(blog);
-      const blogs = await blogsService.getAll();
-      dispatch(setBlogs(blogs));
-    }
-  };
 
   const addBlog = async (blog) => {
     try {
@@ -113,19 +98,17 @@ const App = () => {
               {user && blogForm()}
               {user &&
                 blogs.map((blog) => (
-                  <Blog
-                    key={blog.id}
-                    blog={blog}
-                    setBlogs={setBlogs}
-                    loggedUserId={user.id}
-                    likeBlog={likeBlog}
-                    removeBlog={removeBlog}
-                  />
+                  <div key={blog.id}><Link to={`blogs/${blog.id}`}>{blog.title} by {blog.author}</Link></div>
+
                 ))}
             </>
           }
         />
         <Route path="/users" element={user && <UserDirectory />} />
+        <Route path="/users/:id" element={user && <User />} />
+        <Route path="/blogs/:id" element={user && <Blog />} />
+
+
       </Routes>
     </div>
   );

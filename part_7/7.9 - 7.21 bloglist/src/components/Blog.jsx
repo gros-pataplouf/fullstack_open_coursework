@@ -1,7 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMatch, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { createNotification, eraseNotification } from "../reducers/notificationReducer";
+import { deleteBlog } from "../reducers/blogReducer";
 import blogsService from "../services/blogs";
 
-const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
+const Blog = () => {
+  const [blog, setBlog] = useState(null)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const loggedUser = useSelector(state => state.user)
+  const loggedUserId = loggedUser.id
+  const match = useMatch('/blogs/:id')
+  const blogId = match.params.id
+  useEffect(() => {
+    async function getBlog(id) {
+      const blog = await blogsService.getOne(id)
+      setBlog(blog)
+    }
+    getBlog(blogId)
+  }, [])
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 20,
@@ -38,13 +56,27 @@ const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
     borderRadius: 4,
   };
 
-  const [showDetails, setShowDetails] = useState(false);
-  const toggleDetails = () => setShowDetails(!showDetails);
+  const likeBlog = async (blog) => {
+    await blogsService.like(blog);
+
+  };
+  const removeBlog = async (blog) => {
+    if (
+      window.confirm(`Are you sure to remove ${blog.title} by ${blog.author}?`)
+    ) {
+      await blogsService.remove(blog);
+    }
+  };
+
   const handleLike = async () => {
     await likeBlog(blog);
   };
   const handleRemove = async () => {
     await removeBlog(blog);
+    dispatch(deleteBlog(blogId))
+    dispatch(createNotification({type: 'warning', text: 'Deletion successfull!'}))
+    setTimeout(() => {dispatch(eraseNotification())}, 2000)
+    navigate('/')
   };
 
   const removeButton = () => {
@@ -61,16 +93,12 @@ const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
     }
   };
   return (
+    blog && 
     <div data-testid="blog" style={blogStyle}>
-      {showDetails ? (
-        <>
           <div style={flexStyle}>
             <p data-testid="blog-by-author">
               {blog.title} by {blog.author}
             </p>
-            <button onClick={toggleDetails} style={buttonStyle}>
-              hide
-            </button>
           </div>
           <p data-testid="url">{blog.url}</p>
           <div style={flexStyle}>
@@ -85,21 +113,7 @@ const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
           </div>
           <p data-testid="blog-user-name">{blog.user.name}</p>
           {removeButton()}
-        </>
-      ) : (
-        <div style={flexStyle}>
-          <p data-testid="blog-by-author">
-            {blog.title} by {blog.author}
-          </p>
-          <button
-            onClick={toggleDetails}
-            style={buttonStyle}
-            data-testid="view-button"
-          >
-            view
-          </button>
-        </div>
-      )}
+      
     </div>
   );
 };
