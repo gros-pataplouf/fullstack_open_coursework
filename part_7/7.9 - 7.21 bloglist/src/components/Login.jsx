@@ -23,10 +23,8 @@ const Login = ({ props }) => {
       window.localStorage.setItem('blogUser', JSON.stringify(userInState))
     } catch (e) {
       console.error(e.response.data.error)
-      dispatch(createNotification(e.response.data.error, 'warning'))
-      setTimeout(() => {
-        dispatch(eraseNotification())
-      }, 2000)
+      dispatch(createNotification({text: e.response.data.error, type:'warning'}))
+      setTimeout(() => {dispatch(eraseNotification())}, 2000) 
     }
   }
   const handleLogOut = () => {
