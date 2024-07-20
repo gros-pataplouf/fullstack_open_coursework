@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { createNotification, eraseNotification } from '../reducers/notificationReducer'
+import { setUser, logout } from '../reducers/userReducer'
+
 import loginService from '../services/login'
 import usersService from '../services/users'
-import { createNotification, eraseNotification } from '../reducers/notificationReducer'
-const Login = ({ props }) => {
-  const { user, setUser } = props
+const Login = () => {
   const [input, setInput] = useState({ username: '', password: '' })
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
@@ -19,7 +21,7 @@ const Login = ({ props }) => {
         name: relatedUser.name,
         isLoggedIn: true,
       }
-      setUser(userInState)
+      dispatch(setUser(userInState))
       window.localStorage.setItem('blogUser', JSON.stringify(userInState))
     } catch (e) {
       console.error(e.response.data.error)
@@ -29,7 +31,9 @@ const Login = ({ props }) => {
   }
   const handleLogOut = () => {
     window.localStorage.removeItem('blogUser')
-    setUser(null)
+    dispatch(logout())
+    console.log("logged out")
+    console.log(user)
     setInput({
       username: '',
       password: '',

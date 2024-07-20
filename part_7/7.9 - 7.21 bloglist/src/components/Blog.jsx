@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import blogsService from '../services/blogs'
 
 const Blog = ({ blog, loggedUserId, likeBlog, removeBlog }) => {
   const blogStyle = {

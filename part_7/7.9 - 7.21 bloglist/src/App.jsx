@@ -1,4 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { createNotification, eraseNotification } from './reducers/notificationReducer'
+import { setBlogs } from './reducers/blogReducer'
+import { setUser, logout } from './reducers/userReducer'
+
 import Blog from './components/Blog'
 import Login from './components/Login'
 import Notification from './components/Notification'
@@ -7,12 +12,9 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
-  const [message, setMessage] = useState({
-    type: '',
-    text: '',
-  })
+  const dispatch = useDispatch()
+  const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
   const [input, setInput] = useState({
     username: '',
     password: '',
@@ -21,10 +23,11 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
+    console.log("hello user", user)
     const loggedUserJSON = window.localStorage.getItem('blogUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      const loggedUser = JSON.parse(loggedUserJSON)
+      dispatch(setUser(loggedUser))
       blogsService.setToken(user.token)
     }
   }, [])
@@ -32,7 +35,7 @@ const App = () => {
   useEffect(() => {
     async function getBlogs () {
       const blogs = await blogsService.getAll()
-      setBlogs(blogs)
+      dispatch(setBlogs(blogs))
     }
     getBlogs()
 
@@ -41,34 +44,34 @@ const App = () => {
   const likeBlog = async (blog) => {
     await blogsService.like(blog)
     const blogs = await blogsService.getAll()
-    setBlogs(blogs)
+    dispatch(setBlogs(blogs))
   }
   const removeBlog = async (blog) => {
     if (window.confirm(`Are you sure to remove ${blog.title} by ${blog.author}?`)) {
       await blogsService.remove(blog)
       const blogs = await blogsService.getAll()
-      setBlogs(blogs)
+      dispatch(setBlogs(blogs))
     }
   }
 
   const addBlog = async (blog) => {
     try {
       const addedBlog = await blogsService.create(blog)
-      setMessage({
+      dispatch(createNotification({
         type: 'info',
         text: `${addedBlog.title} has been added successfully!`,
-      })
+      }))
       setTimeout(() => {
-        setMessage({ type: '', text: '' })
+        dispatch(eraseNotification())
       }, 2000)
-      await blogsService.getAll().then((blogs) => setBlogs(blogs))
+      await blogsService.getAll().then((blogs) => dispatch(setBlogs(blogs)))
       blogFormRef.current.toggleVisibility()
       return addedBlog
     } catch (e) {
       console.error(e.response.data.error)
-      setMessage({ type: 'warning', text: e.response.data.error })
+      dispatch(createNotification({ type: 'warning', text: e.response.data.error }))
       setTimeout(() => {
-        setMessage({ type: '', text: '' })
+        dispatch(eraseNotification())
       }, 2000)
     }
   }
