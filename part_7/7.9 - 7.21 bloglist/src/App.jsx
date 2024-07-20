@@ -9,6 +9,7 @@ import { setBlogs } from "./reducers/blogReducer";
 import { setUser, logout } from "./reducers/userReducer";
 
 import Blog from "./components/Blog";
+import Nav from "./components/Nav";
 import Login from "./components/Login";
 import UserDirectory from "./components/UserDirectory";
 import User from "./components/User";
@@ -44,7 +45,6 @@ const App = () => {
     }
     getBlogs();
   }, []);
-
 
   const addBlog = async (blog) => {
     try {
@@ -86,9 +86,11 @@ const App = () => {
 
   return (
     <div>
+      <Nav>
+        <Login props={{ user, setUser, input, setInput }} />
+      </Nav>
       <h2>Blogs</h2>
       <Notification />
-      <Login props={{ user, setUser, input, setInput }} />
 
       <Routes>
         <Route
@@ -98,8 +100,11 @@ const App = () => {
               {user && blogForm()}
               {user &&
                 blogs.map((blog) => (
-                  <div key={blog.id}><Link to={`blogs/${blog.id}`}>{blog.title} by {blog.author}</Link></div>
-
+                  <div key={blog.id}>
+                    <Link to={`blogs/${blog.id}`}>
+                      {blog.title} by {blog.author}
+                    </Link>
+                  </div>
                 ))}
             </>
           }
@@ -107,8 +112,6 @@ const App = () => {
         <Route path="/users" element={user && <UserDirectory />} />
         <Route path="/users/:id" element={user && <User />} />
         <Route path="/blogs/:id" element={user && <Blog />} />
-
-
       </Routes>
     </div>
   );

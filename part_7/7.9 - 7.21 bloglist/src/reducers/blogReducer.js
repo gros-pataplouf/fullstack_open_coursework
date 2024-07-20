@@ -10,8 +10,8 @@ const blogsSlice = createSlice({
       return action.payload;
     },
     deleteBlog(state, action) {
-      return state.filter(blog => blog.id !== action.payload)
-    }
+      return state.filter((blog) => blog.id !== action.payload);
+    },
   },
 });
 

@@ -16,12 +16,10 @@ const getAll = async () => {
 const getOne = async (id) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
-
 };
 
-
 const create = async (blog) => {
-  console.log("token while creating", token)
+  console.log("token while creating", token);
   const response = await axios.post(baseUrl, blog, {
     headers: {
       Authorization: token,
@@ -40,6 +38,13 @@ const like = async (blog) => {
   return response.data;
 };
 
+const comment = async (blog, comment) => {
+  const response = await axios.post(`${baseUrl}/${blog.id}/comment`, {
+    comment,
+  });
+  return response.data;
+};
+
 const remove = async (blog) => {
   console.log("blog to be removed", blog);
   const response = await axios.delete(`${baseUrl}/${blog.id}`, {
@@ -52,4 +57,4 @@ const remove = async (blog) => {
   return response.data;
 };
 
-export default { getAll, getOne, create, setToken, like, remove };
+export default { getAll, getOne, create, setToken, like, remove, comment };

@@ -1,6 +1,7 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 const { authExtractor } = require('../utils/middleware')
 const { BadUpdateError } = require('../utils/customErrors')
 
@@ -10,7 +11,7 @@ blogRouter.get('/', async (_request, response) => {
 })
 
 blogRouter.get('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id).populate('user', { 'username': 1, 'name': 1 })
+  const blog = await Blog.findById(request.params.id).populate('user', { 'username': 1, 'name': 1 }).populate('comments')
   console.log(blog)
   response.json(blog)
 })
@@ -31,6 +32,18 @@ blogRouter.delete('/:id', authExtractor, async (request, response) => {
   }
   await Blog.findByIdAndDelete(request.params.id)
   response.status(204).end()
+})
+
+blogRouter.post('/:id/comment', async (request, response) => {
+  const relatedBlog = await Blog.findById(request.params.id)
+  const comment = new Comment({...request.body, blog: relatedBlog.id})
+  const result = await comment.save()
+  if (!(relatedBlog.comments)){
+    relatedBlog.comments = []
+  }
+  relatedBlog.comments.push(comment)
+  await relatedBlog.save()
+  response.status(201).send(result)
 })
 
 blogRouter.put('/:id', async (request, response) => {
