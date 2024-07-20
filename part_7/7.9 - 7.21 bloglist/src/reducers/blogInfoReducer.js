@@ -8,7 +8,7 @@ const blogInfoSlice = createSlice({
   reducers: {
     setBlogInfo(state, action) {
       return action.payload;
-    }
+    },
   },
 });
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Form, Button } from "react-bootstrap";
 import {
   createNotification,
   eraseNotification,
@@ -54,8 +55,7 @@ const Login = () => {
   if (!user) {
     return (
       <div>
-        <h2>Log in to application</h2>
-        <form data-testid="login-form" onSubmit={handleLogin}>
+        <Form data-testid="login-form" onSubmit={handleLogin}>
           <input
             type="text"
             placeholder="username"
@@ -76,16 +76,22 @@ const Login = () => {
             data-testid="login-password"
           />
           <label htmlFor="password">password</label>
-          <button data-testid="login-button">Log in</button>
-        </form>
+          <Button type="submit" data-testid="login-button">
+            Log in
+          </Button>
+        </Form>
       </div>
     );
   } else {
     return (
-      <>
-        <div>You are logged in as {user.name}.</div>
-        <button onClick={handleLogOut}>Log out</button>
-      </>
+      <div className="d-flex p-2 bd-highlight">
+        <div className="p-2 text-white fs-4">
+          You are logged in as {user.name}.
+        </div>
+        <Button onClick={handleLogOut} className="fs-4 border btn btn-dark">
+          Log out
+        </Button>
+      </div>
     );
   }
 };

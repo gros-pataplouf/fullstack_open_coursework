@@ -1,7 +1,9 @@
 import React from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
+import Table from "react-bootstrap/Table";
 import { setUserDirectory } from "../reducers/userDirectoryReducer";
 import userService from "../services/users";
 
@@ -19,10 +21,12 @@ function UserDirectory() {
     <div>
       <h2>Users</h2>
       {userDirectory.length > 0 && (
-        <table>
+        <Table striped>
           <thead>
-            <td></td>
-            <td>num of blogs</td>
+            <tr>
+              <th></th>
+              <th>num of blogs</th>
+            </tr>
           </thead>
           <tbody>
             {userDirectory.map((user) => (
@@ -34,7 +38,7 @@ function UserDirectory() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
     </div>
   );

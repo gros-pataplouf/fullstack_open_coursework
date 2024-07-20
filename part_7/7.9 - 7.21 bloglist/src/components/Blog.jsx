@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { Button, Container } from "react-bootstrap";
 import {
   createNotification,
   eraseNotification,
@@ -11,7 +12,7 @@ import blogsService from "../services/blogs";
 import Comments from "./Comments";
 
 const Blog = () => {
-  const blog = useSelector(state => state.blogInfo);
+  const blog = useSelector((state) => state.blogInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.user);
@@ -21,45 +22,10 @@ const Blog = () => {
   useEffect(() => {
     async function getBlog(id) {
       const currentBlog = await blogsService.getOne(id);
-      dispatch(setBlogInfo(currentBlog))
+      dispatch(setBlogInfo(currentBlog));
     }
     getBlog(blogId);
   }, []);
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 20,
-    paddingBottom: 5,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 10,
-    borderRadius: 8,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  };
-
-  const flexStyle = {
-    display: "flex",
-    alignItems: "center",
-  };
-
-  const buttonStyle = {
-    marginLeft: 15,
-    height: "min-content",
-    padding: "8px 12px",
-    backgroundColor: "#3498DB",
-    color: "white",
-    border: "none",
-    borderRadius: 4,
-    cursor: "pointer",
-    transition: "background-color 0.3s",
-  };
-
-  const removeButtonStyle = {
-    backgroundColor: "#FF5722",
-    padding: "8px 12px",
-    color: "white",
-    border: "none",
-    borderRadius: 4,
-  };
 
   const like = async (blog) => {
     await blogsService.like(blog);
@@ -74,8 +40,7 @@ const Blog = () => {
 
   const handleLike = async () => {
     await like(blog);
-    dispatch(setBlogInfo({ ...blog, likes: blog.likes + 1 }))
-;
+    dispatch(setBlogInfo({ ...blog, likes: blog.likes + 1 }));
   };
   const handleRemove = async () => {
     await removeBlog(blog);
@@ -93,39 +58,39 @@ const Blog = () => {
   const removeButton = () => {
     if (loggedUserId === blog.user.id) {
       return (
-        <button
-          style={removeButtonStyle}
+        <Button
           onClick={handleRemove}
           data-testid="delete-button"
+          className="btn-danger"
         >
           remove
-        </button>
+        </Button>
       );
     }
   };
   return (
     blog && (
-      <div data-testid="blog" style={blogStyle}>
-        <div style={flexStyle}>
+      <Container data-testid="blog">
+        <div>
           <p data-testid="blog-by-author">
             {blog.title} by {blog.author}
           </p>
         </div>
         <p data-testid="url">{blog.url}</p>
-        <div style={flexStyle}>
+        <div>
           <p data-testid="likes">likes {blog.likes}</p>{" "}
-          <button
-            style={buttonStyle}
+          <Button
             onClick={handleLike}
             data-testid="like-button"
+            className="btn-primary"
           >
             like
-          </button>
+          </Button>
         </div>
         <p data-testid="blog-user-name">{blog.user.name}</p>
         {removeButton()}
         <Comments blog={blog} />
-      </div>
+      </Container>
     )
   );
 };

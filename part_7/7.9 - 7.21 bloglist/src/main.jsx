@@ -10,7 +10,6 @@ import userDirectoryReducer from "./reducers/userDirectoryReducer";
 import userInfoReducer from "./reducers/userInfoReducer";
 import blogInfoReducer from "./reducers/blogInfoReducer";
 
-
 import App from "./App";
 
 export const store = configureStore({

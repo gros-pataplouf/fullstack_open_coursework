@@ -1,3 +1,5 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import { useState, useEffect, useRef } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,9 +9,9 @@ import {
 } from "./reducers/notificationReducer";
 import { setBlogs } from "./reducers/blogReducer";
 import { setUser, logout } from "./reducers/userReducer";
-
+import { Container } from "react-bootstrap";
 import Blog from "./components/Blog";
-import Nav from "./components/Nav";
+import NavigationMenue from "./components/Nav";
 import Login from "./components/Login";
 import UserDirectory from "./components/UserDirectory";
 import User from "./components/User";
@@ -85,34 +87,37 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Nav>
+    <div className="fs-4">
+      <NavigationMenue>
         <Login props={{ user, setUser, input, setInput }} />
-      </Nav>
-      <h2>Blogs</h2>
-      <Notification />
+      </NavigationMenue>
+      <Container className="p-8">
+        <Notification />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              {user && blogForm()}
-              {user &&
-                blogs.map((blog) => (
-                  <div key={blog.id}>
-                    <Link to={`blogs/${blog.id}`}>
-                      {blog.title} by {blog.author}
-                    </Link>
-                  </div>
-                ))}
-            </>
-          }
-        />
-        <Route path="/users" element={user && <UserDirectory />} />
-        <Route path="/users/:id" element={user && <User />} />
-        <Route path="/blogs/:id" element={user && <Blog />} />
-      </Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                {" "}
+                <h2>Blogs</h2>
+                {user && blogForm()}
+                {user &&
+                  blogs.map((blog) => (
+                    <div key={blog.id}>
+                      <Link to={`blogs/${blog.id}`}>
+                        {blog.title} by {blog.author}
+                      </Link>
+                    </div>
+                  ))}
+              </>
+            }
+          />
+          <Route path="/users" element={user && <UserDirectory />} />
+          <Route path="/users/:id" element={user && <User />} />
+          <Route path="/blogs/:id" element={user && <Blog />} />
+        </Routes>
+      </Container>
     </div>
   );
 };
