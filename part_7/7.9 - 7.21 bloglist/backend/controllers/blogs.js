@@ -12,7 +12,6 @@ blogRouter.get('/', async (_request, response) => {
 
 blogRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id).populate('user', { 'username': 1, 'name': 1 }).populate('comments')
-  console.log(blog)
   response.json(blog)
 })
 
@@ -36,7 +35,8 @@ blogRouter.delete('/:id', authExtractor, async (request, response) => {
 
 blogRouter.post('/:id/comment', async (request, response) => {
   const relatedBlog = await Blog.findById(request.params.id)
-  const comment = new Comment({...request.body, blog: relatedBlog.id})
+  console.log(request.params.id, request.body)
+  const comment = new Comment({text: request.body.text, blog: relatedBlog.id})
   const result = await comment.save()
   if (!(relatedBlog.comments)){
     relatedBlog.comments = []

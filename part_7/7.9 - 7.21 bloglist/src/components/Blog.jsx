@@ -9,7 +9,6 @@ import { deleteBlog } from "../reducers/blogReducer";
 import blogsService from "../services/blogs";
 import Comments from "./Comments";
 
-
 const Blog = () => {
   const [blog, setBlog] = useState(null);
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ const Blog = () => {
   };
 
   const like = async (blog) => {
-    console.log(blog)
+    console.log(blog);
     await blogsService.like(blog);
   };
   const removeBlog = async (blog) => {
@@ -75,13 +74,11 @@ const Blog = () => {
 
   const handleLike = async () => {
     await like(blog);
-    setBlog({...blog, likes: blog.likes+1})
-
-
+    setBlog({ ...blog, likes: blog.likes + 1 });
   };
   const handleRemove = async () => {
     await removeBlog(blog);
-    console.log(blogId)
+    console.log(blogId);
     dispatch(deleteBlog(blogId));
     dispatch(
       createNotification({ type: "warning", text: "Deletion successfull!" }),
@@ -126,8 +123,7 @@ const Blog = () => {
         </div>
         <p data-testid="blog-user-name">{blog.user.name}</p>
         {removeButton()}
-        <Comments blog={blog}/>
-
+        <Comments blog={blog} />
       </div>
     )
   );
