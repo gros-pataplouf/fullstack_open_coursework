@@ -2,7 +2,6 @@ import React from "react";
 import CommentForm from "./CommentForm";
 
 function Comments({ blog }) {
-  console.log(blog);
   return (
     <div>
       <h3>comments</h3>

@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { useMatch } from "react-router-dom";
 import blogService from "../services/blogs";
+import { useDispatch, useSelector } from "react-redux";
+import { setBlogInfo } from "../reducers/blogInfoReducer";
 
 const CommentForm = () => {
+  const dispatch = useDispatch()
   const [newComment, setNewComment] = useState({
     text: "",
   });
-  const match = useMatch("/blogs/:id");
-  const blogId = match.params.id;
+  const blog = useSelector(state => state.blogInfo)
+  const blogId = blog.id
 
   const addComment = async (e) => {
     e.preventDefault();
     await blogService.comment(newComment.text, blogId);
+    dispatch(setBlogInfo({...blog, comments: blog.comments.concat(newComment) }))
     setNewComment({ text: "" });
   };
 

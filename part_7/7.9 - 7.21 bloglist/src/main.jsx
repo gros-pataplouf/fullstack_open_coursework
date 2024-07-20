@@ -8,6 +8,8 @@ import blogReducer from "./reducers/blogReducer";
 import userReducer from "./reducers/userReducer";
 import userDirectoryReducer from "./reducers/userDirectoryReducer";
 import userInfoReducer from "./reducers/userInfoReducer";
+import blogInfoReducer from "./reducers/blogInfoReducer";
+
 
 import App from "./App";
 
@@ -18,6 +20,7 @@ export const store = configureStore({
     user: userReducer,
     userDirectory: userDirectoryReducer,
     userInfo: userInfoReducer,
+    blogInfo: blogInfoReducer,
   },
 });
 

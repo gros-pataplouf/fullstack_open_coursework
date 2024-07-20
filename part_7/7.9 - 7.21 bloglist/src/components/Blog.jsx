@@ -6,11 +6,12 @@ import {
   eraseNotification,
 } from "../reducers/notificationReducer";
 import { deleteBlog } from "../reducers/blogReducer";
+import { setBlogInfo } from "../reducers/blogInfoReducer";
 import blogsService from "../services/blogs";
 import Comments from "./Comments";
 
 const Blog = () => {
-  const [blog, setBlog] = useState(null);
+  const blog = useSelector(state => state.blogInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.user);
@@ -19,8 +20,8 @@ const Blog = () => {
   const blogId = match.params.id;
   useEffect(() => {
     async function getBlog(id) {
-      const blog = await blogsService.getOne(id);
-      setBlog(blog);
+      const currentBlog = await blogsService.getOne(id);
+      dispatch(setBlogInfo(currentBlog))
     }
     getBlog(blogId);
   }, []);
@@ -61,7 +62,6 @@ const Blog = () => {
   };
 
   const like = async (blog) => {
-    console.log(blog);
     await blogsService.like(blog);
   };
   const removeBlog = async (blog) => {
@@ -74,7 +74,8 @@ const Blog = () => {
 
   const handleLike = async () => {
     await like(blog);
-    setBlog({ ...blog, likes: blog.likes + 1 });
+    dispatch(setBlogInfo({ ...blog, likes: blog.likes + 1 }))
+;
   };
   const handleRemove = async () => {
     await removeBlog(blog);
