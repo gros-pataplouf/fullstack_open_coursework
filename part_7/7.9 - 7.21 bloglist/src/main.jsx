@@ -1,11 +1,18 @@
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import { store } from './reducers/notificationReducer'
-const root = ReactDOM.createRoot(document.getElementById('root'))
+import { notificationReducer } from './reducers/notificationReducer'
+import { createStore, combineReducers } from 'redux'
+import { Provider } from 'react-redux' 
 
-const renderApp = () => {
-  root.render(<App />)
-}
+const reducer = combineReducers({
+  notifications: notificationReducer,
+})
 
-renderApp()
-store.subscribe(renderApp)
+export const store = createStore(reducer)
+
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <App />
+  </Provider>)
+

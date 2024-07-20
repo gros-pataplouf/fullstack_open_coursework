@@ -88,7 +88,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={message} />
+      <Notification />
       <Login props={{ user, setUser, input, setInput }} />
       {user && blogForm()}
 

@@ -1,5 +1,3 @@
-import {createStore} from 'redux'
-
 const initialState = {type: '', content: ''}
 
 
@@ -16,4 +14,20 @@ export const notificationReducer = (state = initialState, action) => {
     }
 }
 
-export const store = createStore(notificationReducer)
+
+export const createNotification = (text, type) => {
+    return {
+      type: 'SET',
+      payload: {
+        text,
+        type
+      }
+    }
+  }
+  
+  export const eraseNotification = () => {
+    return {
+      type: 'RESET',
+    }
+  }
+  

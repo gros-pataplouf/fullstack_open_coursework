@@ -1,16 +1,12 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import loginService from '../services/login'
 import usersService from '../services/users'
-import Notification from './Notification'
-import { store } from '../reducers/notificationReducer'
-
+import { createNotification, eraseNotification } from '../reducers/notificationReducer'
 const Login = ({ props }) => {
   const { user, setUser } = props
   const [input, setInput] = useState({ username: '', password: '' })
-  const [message, setMessage] = useState({
-    type: '',
-    text: '',
-  })
+  const dispatch = useDispatch()
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
@@ -27,9 +23,9 @@ const Login = ({ props }) => {
       window.localStorage.setItem('blogUser', JSON.stringify(userInState))
     } catch (e) {
       console.error(e.response.data.error)
-      store.dispatch({type:'SET', payload: { type: 'warning', text: e.response.data.error }})
+      dispatch(createNotification(e.response.data.error, 'warning'))
       setTimeout(() => {
-        store.dispatch({type: 'RESET'})
+        dispatch(eraseNotification())
       }, 2000)
     }
   }
@@ -50,7 +46,6 @@ const Login = ({ props }) => {
     return (
       <div>
         <h2>Log in to application</h2>
-        {message.text && <Notification message={store.getState()} />}
         <form data-testid="login-form" onSubmit={handleLogin}>
           <input
             type="text"
