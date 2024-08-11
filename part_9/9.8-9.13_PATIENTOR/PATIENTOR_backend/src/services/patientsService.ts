@@ -1,4 +1,5 @@
 import patientsData from "../data/patients";
+import { toNewPatient } from "../utils";
 import { PatientSafe, Patient, NewPatient } from "../types/types";
 import { v1 as uuid } from "uuid";
 
@@ -10,10 +11,10 @@ const getPatientsSafe = (): PatientSafe[] => {
   });
 };
 
-const createPatient = (object: NewPatient): Patient | void => {
-  console.log(object);
+const createPatient = (object: unknown): Patient | void => {
+  const newPatient : NewPatient = toNewPatient(object);
   const id: string = uuid();
-  patientsData.push({ id, ...object });
+  patientsData.push({ id, ...newPatient });
 };
 
 export default {
