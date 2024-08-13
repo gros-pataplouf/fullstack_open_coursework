@@ -6,7 +6,7 @@ interface ContentProps {
 
 const Content = (props: ContentProps) => {
   return (
-    <div>{props.name} {props.exerciseCount}</div>
+    <h1>{props.name} {props.exerciseCount}</h1>
   )
 }
 
