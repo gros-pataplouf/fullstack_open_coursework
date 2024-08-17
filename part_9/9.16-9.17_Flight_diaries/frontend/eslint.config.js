@@ -22,7 +22,5 @@ export default [
   ...tseslint.configs.recommendedTypeChecked,
   pluginReact.configs.flat.recommended,
   {ignores: ["eslint.config.js", "vite.config.ts"]},
-  {rules: {"react/react-in-jsx-scope": "off"}}
-
 
 ];

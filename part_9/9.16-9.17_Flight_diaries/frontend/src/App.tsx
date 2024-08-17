@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { DiaryEntry } from "./types";
 import diaryService from "./services/diaries"
@@ -6,7 +7,16 @@ function App(): React.JSX.Element {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([])
   useEffect(() => {
     diaryService.getAll()
-    .then(res => setDiaryEntries(res));
+    .then(res => setDiaryEntries(res))
+    .catch(error => {
+      if (axios.isAxiosError(error)) {
+        console.log(error.status)
+        console.error(error.response);
+      } else {
+        console.error(error);
+      }
+
+    })
   }, [])
   return (
     <>
