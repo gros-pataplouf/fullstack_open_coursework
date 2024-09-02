@@ -21,3 +21,11 @@ export enum Weather {
     comment: string;
   }
   
+  export interface InitialForm {
+    date: undefined | string;
+    weather: undefined | string;
+    visibility: undefined | string;
+    comment: undefined | string;
+  }
+
+  export type DiaryForm = Omit<DiaryEntry, "id">;

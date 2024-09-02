@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { DiaryEntry } from "./types";
 import diaryService from "./services/diaries"
+import Form from "./components/Form";
 
 function App(): React.JSX.Element {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([])
@@ -21,6 +22,7 @@ function App(): React.JSX.Element {
   return (
     <>
       <h1>Flight diaries</h1>
+      <Form/>
       {diaryEntries.map(entry => {
         return (
         <div key={entry.id}>
