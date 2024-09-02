@@ -11,26 +11,27 @@ function parse(
   console.log(input, kind)
   switch (kind) {
     case "weather":
-      if (Object.values(Weather).includes(input)) {
-        return input;
+      console.log(Object.values(Weather), input);
+      if (Object.values(Weather).includes(input.weather)) {
+        return input.weather;
       } else {
         throw new Error("Invalid value for weather");
       }
     case "visibility":
-      if (Object.values(Visibility).includes(input)) {
-        return input;
+      if (Object.values(Visibility).includes(input.visibility)) {
+        return input.visibility;
       } else {
         throw new Error("Invalid value for visibility");
       }
     case "comment":
-      if (typeof input == "string") {
-        return input;
+      if (typeof input.comment == "string") {
+        return input.comment;
       } else {
         throw new Error("Invalid value for comment");
       }
     case "date":
-      if (!isNaN(Date.parse(input))) {
-        return input;
+      if (!isNaN(Date.parse(input.date))) {
+        return input.date;
       } else {
         throw new Error("Invalid value for date");
       }
@@ -57,7 +58,7 @@ function Form(): React.JSX.Element {
       key === "comment"
     ) {
       const value = target.value;
-      setNewEntry({ ...initialState, [key]: value });
+      setNewEntry({ ...newEntry, [key]: value });
     } else {
       throw new Error("invalid fields in source file");
     }
@@ -65,12 +66,14 @@ function Form(): React.JSX.Element {
 
   function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
+    console.log(newEntry);
     const newDiaryEntry: DiaryForm = {
       weather: parse(newEntry, "weather") as Weather,
       visibility: parse(newEntry, "visibility") as Visibility,
       comment: parse(newEntry, "comment"),
       date: parse(newEntry, "date"),
     };
+    console.log("parsed entry", newDiaryEntry);
 
     diaryService.create(newDiaryEntry);
   }
