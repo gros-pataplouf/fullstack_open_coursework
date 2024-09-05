@@ -3,7 +3,7 @@ export enum Weather {
     Rainy = 'rainy',
     Cloudy = 'cloudy',
     Stormy = 'stormy',
-    Windy = 'windy',
+    Windy = 'windy'
   }
   
   export enum Visibility {
@@ -29,3 +29,9 @@ export enum Weather {
   }
 
   export type DiaryForm = Omit<DiaryEntry, "id">;
+
+  export interface FormProps {
+    setNotification: React.Dispatch<React.SetStateAction<string>>;
+    diaryEntries: DiaryEntry[];
+    setDiaryEntries: React.Dispatch<React.SetStateAction<DiaryEntry[]>>;
+  }

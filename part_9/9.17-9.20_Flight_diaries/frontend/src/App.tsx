@@ -5,7 +5,8 @@ import diaryService from "./services/diaries"
 import Form from "./components/Form";
 
 function App(): React.JSX.Element {
-  const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([])
+  const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
+  const [notification, setNotification] = useState<string>("");
   useEffect(() => {
     diaryService.getAll()
     .then(res => setDiaryEntries(res))
@@ -18,11 +19,12 @@ function App(): React.JSX.Element {
       }
 
     })
-  }, [])
+  }, [notification])
   return (
     <>
       <h1>Flight diaries</h1>
-      <Form/>
+      <p>{notification}</p>
+      <Form setNotification={setNotification} setDiaryEntries={setDiaryEntries} diaryEntries={diaryEntries}/>
       {diaryEntries.map(entry => {
         return (
         <div key={entry.id}>

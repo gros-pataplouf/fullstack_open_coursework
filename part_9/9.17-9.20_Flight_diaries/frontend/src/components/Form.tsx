@@ -1,6 +1,7 @@
 import React, { SyntheticEvent } from "react";
+import axios from "axios";
 import { useState } from "react";
-import { InitialForm, DiaryForm } from "../types";
+import { InitialForm, DiaryForm, FormProps } from "../types";
 import diaryService from "../services/diaries";
 import { Weather, Visibility } from "../types";
 
@@ -8,10 +9,8 @@ function parse(
   input: any,
   kind: "weather" | "visibility" | "comment" | "date"
 ): string {
-  console.log(input, kind)
   switch (kind) {
     case "weather":
-      console.log(Object.values(Weather), input);
       if (Object.values(Weather).includes(input.weather)) {
         return input.weather;
       } else {
@@ -40,12 +39,13 @@ function parse(
   }
 }
 
-function Form(): React.JSX.Element {
+function Form(props: FormProps): React.JSX.Element {
+  const {setNotification, setDiaryEntries, diaryEntries} = props;
   const initialState: InitialForm = {
-    date: undefined,
-    weather: undefined,
-    visibility: undefined,
-    comment: undefined,
+    date: "2024-09-01",
+    weather: "",
+    visibility: "",
+    comment: "",
   };
   const [newEntry, setNewEntry] = useState<InitialForm>(initialState);
   function handleChange(e: SyntheticEvent) {
@@ -64,19 +64,37 @@ function Form(): React.JSX.Element {
     }
   }
 
-  function handleSubmit(e: SyntheticEvent) {
+  async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
-    console.log(newEntry);
-    const newDiaryEntry: DiaryForm = {
-      weather: parse(newEntry, "weather") as Weather,
-      visibility: parse(newEntry, "visibility") as Visibility,
-      comment: parse(newEntry, "comment"),
-      date: parse(newEntry, "date"),
-    };
-    console.log("parsed entry", newDiaryEntry);
+    try {
+      const newDiaryEntry: DiaryForm = {
+        weather: parse(newEntry, "weather") as Weather,
+        visibility: parse(newEntry, "visibility") as Visibility,
+        comment: parse(newEntry, "comment"),
+        date: parse(newEntry, "date"),
+      };
+      const result = await diaryService.create(newDiaryEntry);
+      setDiaryEntries([...diaryEntries, result]);
 
-    diaryService.create(newDiaryEntry);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.status);
+        console.error("error occurred", error.response);
+        setNotification(error.response?.data);
+      } else if (error instanceof Error) {
+        console.error("another type of error");
+        console.error(error.message);
+        setNotification(error.message);
+      }
+    }
+    setTimeout(() => {
+      setNotification("");
+      setNewEntry(initialState);
+      console.log(initialState);
+
+    }, 3000)
   }
+
 
   return (
     <form action="" onSubmit={handleSubmit}>
