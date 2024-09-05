@@ -1,12 +1,12 @@
 import React, { SyntheticEvent } from "react";
 import axios from "axios";
 import { useState } from "react";
-import { InitialForm, DiaryForm, FormProps } from "../types";
+import { InitialForm, DiaryForm, FormProps, DiaryEntry } from "../types";
 import diaryService from "../services/diaries";
 import { Weather, Visibility } from "../types";
 
 function parse(
-  input: any,
+  input: InitialForm,
   kind: "weather" | "visibility" | "comment" | "date"
 ): string {
   switch (kind) {
@@ -43,8 +43,8 @@ function Form(props: FormProps): React.JSX.Element {
   const {setNotification, setDiaryEntries, diaryEntries} = props;
   const initialState: InitialForm = {
     date: "2024-09-01",
-    weather: "",
-    visibility: "",
+    weather: Weather.Sunny,
+    visibility: Visibility.Great,
     comment: "",
   };
   const [newEntry, setNewEntry] = useState<InitialForm>(initialState);
@@ -73,7 +73,7 @@ function Form(props: FormProps): React.JSX.Element {
         comment: parse(newEntry, "comment"),
         date: parse(newEntry, "date"),
       };
-      const result = await diaryService.create(newDiaryEntry);
+      const result = await diaryService.create(newDiaryEntry) as DiaryEntry;
       setDiaryEntries([...diaryEntries, result]);
 
     } catch (error: unknown) {
@@ -106,22 +106,30 @@ function Form(props: FormProps): React.JSX.Element {
         value={newEntry.date}
         onChange={handleChange}
       />
-      <label htmlFor="weather">weather</label>
-      <input
-        type="text"
-        name="weather"
-        id="weather"
-        value={newEntry.weather}
-        onChange={handleChange}
-      />
-      <label htmlFor="visibility">visibility</label>
-      <input
-        type="text"
-        name="visibility"
-        id="visibility"
-        value={newEntry.visibility}
-        onChange={handleChange}
-      />
+      <div>
+        <span>weather</span>
+        {Object.values(Weather).map(value => {
+          return(
+          <div key={value}>
+            <input type="radio" id={value} name="weather" value={value} checked={newEntry.weather === value} onChange={handleChange} />
+            <label htmlFor="weather">{value}</label>
+          </div>
+          )
+        })}
+        <div>
+        <span>visibility</span>
+        {Object.values(Visibility).map(value => {
+          return(
+          <div key={value}>
+            <input type="radio" id={value} name="visibility" value={value} checked={newEntry.visibility === value} onChange={handleChange} />
+            <label htmlFor="visibility">{value}</label>
+          </div>
+          )
+        })}
+        </div>
+
+
+  </div>
       <label htmlFor="comment">comment</label>
       <input
         type="text"
