@@ -10,7 +10,7 @@ const newPatientSchema = z.object({
   occupation: z.string()
 
 
-})
+});
 
 export const toNewPatient = (object: unknown): NewPatient => {
   if (!object || typeof object !== "object") {
