@@ -11,7 +11,7 @@ async function getAll () {
 }
 
 async function create (newData: DiaryForm) {
-    const res = await axios.post(baseURL, newData);
+    const res = await axios.post<DiaryEntry>(baseURL, newData);
     if (res.status > 399) {
         throw new Error(res.statusText);
     }

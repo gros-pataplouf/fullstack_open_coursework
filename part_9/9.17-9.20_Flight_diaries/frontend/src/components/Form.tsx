@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from "react";
 import axios from "axios";
 import { useState } from "react";
-import { InitialForm, DiaryForm, FormProps, DiaryEntry } from "../types";
+import { InitialForm, DiaryForm, FormProps } from "../types";
 import diaryService from "../services/diaries";
 import { Weather, Visibility } from "../types";
 
@@ -40,7 +40,7 @@ function parse(
 }
 
 function Form(props: FormProps): React.JSX.Element {
-  const {setNotification, setDiaryEntries, diaryEntries} = props;
+  const { setNotification, setDiaryEntries, diaryEntries } = props;
   const initialState: InitialForm = {
     date: "2024-09-01",
     weather: Weather.Sunny,
@@ -64,7 +64,7 @@ function Form(props: FormProps): React.JSX.Element {
     }
   }
 
-  async function handleSubmit(e: SyntheticEvent) {
+  function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     try {
       const newDiaryEntry: DiaryForm = {
@@ -73,17 +73,27 @@ function Form(props: FormProps): React.JSX.Element {
         comment: parse(newEntry, "comment"),
         date: parse(newEntry, "date"),
       };
-      const result = await diaryService.create(newDiaryEntry) as DiaryEntry;
-      setDiaryEntries([...diaryEntries, result]);
-
+      (async () => {
+        await diaryService.create(newDiaryEntry);
+      })()
+        .then((res) => {
+          if (res !== undefined) {
+            setDiaryEntries([...diaryEntries, res]);
+          } else {
+            throw new Error("undefined error");
+          }
+        })
+        .catch((error: unknown) => {
+          if (axios.isAxiosError(error)) {
+            if (typeof error.response?.data === "string") {
+              setNotification(error.response?.data);
+            } else {
+              setNotification("unknown error");
+            }
+          }
+        });
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.status);
-        console.error("error occurred", error.response);
-        setNotification(error.response?.data);
-      } else if (error instanceof Error) {
-        console.error("another type of error");
-        console.error(error.message);
+      if (error instanceof Error) {
         setNotification(error.message);
       }
     }
@@ -91,10 +101,8 @@ function Form(props: FormProps): React.JSX.Element {
       setNotification("");
       setNewEntry(initialState);
       console.log(initialState);
-
-    }, 3000)
+    }, 3000);
   }
-
 
   return (
     <form action="" onSubmit={handleSubmit}>
@@ -108,28 +116,40 @@ function Form(props: FormProps): React.JSX.Element {
       />
       <div>
         <span>weather</span>
-        {Object.values(Weather).map(value => {
-          return(
-          <div key={value}>
-            <input type="radio" id={value} name="weather" value={value} checked={newEntry.weather === value} onChange={handleChange} />
-            <label htmlFor="weather">{value}</label>
-          </div>
-          )
+        {Object.values(Weather).map((value) => {
+          return (
+            <div key={value}>
+              <input
+                type="radio"
+                id={value}
+                name="weather"
+                value={value}
+                checked={newEntry.weather === value}
+                onChange={handleChange}
+              />
+              <label htmlFor="weather">{value}</label>
+            </div>
+          );
         })}
         <div>
-        <span>visibility</span>
-        {Object.values(Visibility).map(value => {
-          return(
-          <div key={value}>
-            <input type="radio" id={value} name="visibility" value={value} checked={newEntry.visibility === value} onChange={handleChange} />
-            <label htmlFor="visibility">{value}</label>
-          </div>
-          )
-        })}
+          <span>visibility</span>
+          {Object.values(Visibility).map((value) => {
+            return (
+              <div key={value}>
+                <input
+                  type="radio"
+                  id={value}
+                  name="visibility"
+                  value={value}
+                  checked={newEntry.visibility === value}
+                  onChange={handleChange}
+                />
+                <label htmlFor="visibility">{value}</label>
+              </div>
+            );
+          })}
         </div>
-
-
-  </div>
+      </div>
       <label htmlFor="comment">comment</label>
       <input
         type="text"
