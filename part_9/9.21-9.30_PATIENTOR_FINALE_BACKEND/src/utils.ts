@@ -1,31 +1,16 @@
 import { z } from "zod";
-import { NewPatient } from "./types/types";
-import { Gender } from "./types/types";
+import { Gender, EntrySchema } from "./types/types";
 
-const newPatientSchema = z.object({
+
+const NewPatientSchema = z.object({
   name: z.string(),
-  dateOfBirth: z.string().date(),
+  dateOfBirth: z.string(),
   ssn: z.string(),
   gender: z.nativeEnum(Gender),
-  occupation: z.string()
-
-
+  occupation: z.string(),
+  entries: z.array(EntrySchema).optional()
 });
 
-export const toNewPatient = (object: unknown): NewPatient => {
-  if (!object || typeof object !== "object") {
-    throw new Error("Incorrect of missing data");
-  }
-
-  if (
-    "name" in object &&
-    "dateOfBirth" in object &&
-    "ssn" in object &&
-    "gender" in object &&
-    "occupation" in object
-  ) {
-    return newPatientSchema.parse(object);
-  } else {
-    throw new Error("Incorrect data: some fields are missing");
-  }
+export const toNewPatient = (object: unknown): z.infer<typeof NewPatientSchema> => {
+    return NewPatientSchema.parse(object);
 };
