@@ -29,32 +29,37 @@ const BaseEntrySchema = {
   diagnosisCodes: z.array(z.string()).optional()
 }
 
+const HospitalEntrySchema =   z.object({
+  ...BaseEntrySchema,
+  type: z.literal('Hospital'),
+  discharge: z.object({
+    date: z.string(),
+    criteria: z.string()
+  })
+})
+
+const OccupationalHealthcareSchema =   z.object({
+  type: z.literal('OccupationalHealthcare'),
+  ...BaseEntrySchema,
+  employerName: z.string(),
+  sickLeave: z.object({
+    startDate: z.string(),
+    endDate: z.string()
+  }).optional()
+
+})
+
+const HealthCheckSchema =   z.object({
+  type: z.literal('HealthCheck'),
+  ...BaseEntrySchema,
+  healthCheckRating: z.nativeEnum(HealthCheckRating)
+})
+
 
 export const EntrySchema = z.discriminatedUnion("type", [
-  z.object({
-    ...BaseEntrySchema,
-    type: z.literal('Hospital'),
-    discharge: z.object({
-      date: z.string(),
-      criteria: z.string()
-    })
-  }),
-  z.object({
-    type: z.literal('OccupationalHealthcare'),
-    ...BaseEntrySchema,
-    employerName: z.string(),
-    sickLeave: z.object({
-      startDate: z.string(),
-      endDate: z.string()
-    }).optional()
-
-  }),
-  
-  z.object({
-    type: z.literal('HealthCheck'),
-    ...BaseEntrySchema,
-    healthCheckRating: z.nativeEnum(HealthCheckRating)
-  }),
+  HospitalEntrySchema,
+  OccupationalHealthcareSchema,
+  HealthCheckSchema
 ]);
 
 const PatientSchema = z.object({
