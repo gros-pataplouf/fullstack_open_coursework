@@ -1,4 +1,4 @@
-import { Patient, Gender } from '../../types'
+import { Patient, Gender } from '../../types';
 import EntryDetails from './EntryDetails';
 
 import MaleIcon from '@mui/icons-material/Male';
@@ -26,7 +26,7 @@ function PatientDetail(props: PatientProps) {
 
 
     </div>
-  )
+  );
 }
 
-export default PatientDetail
+export default PatientDetail;
