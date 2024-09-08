@@ -73,7 +73,10 @@ const PatientSchema = z.object({
 })
 
 export type Diagnosis = z.infer<typeof DiagnosisSchema>;
-export type Patient = z.infer<typeof PatientSchema>
+export type Patient = z.infer<typeof PatientSchema>;
+export type Entry = z.infer<typeof EntrySchema>;
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 export type PatientSafe = Omit<Patient, "ssn">;
 export type NewPatient = Omit<Patient, "id">;
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+export type NewEntry = UnionOmit<Entry, 'id'>;

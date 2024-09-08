@@ -65,3 +65,4 @@ export enum HealthCheckRating {
 }
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
+

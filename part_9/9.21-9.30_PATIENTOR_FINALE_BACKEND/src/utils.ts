@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Gender, EntrySchema } from "./types/types";
+import { Gender, EntrySchema, Entry } from "./types/types";
 
 
 const NewPatientSchema = z.object({
@@ -14,3 +14,8 @@ const NewPatientSchema = z.object({
 export const toNewPatient = (object: unknown): z.infer<typeof NewPatientSchema> => {
     return NewPatientSchema.parse(object);
 };
+
+
+export const toNewEntry = (object: unknown): Entry => {
+  return EntrySchema.parse(object);
+}

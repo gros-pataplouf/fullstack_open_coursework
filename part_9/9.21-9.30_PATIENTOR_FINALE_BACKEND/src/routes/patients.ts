@@ -8,6 +8,21 @@ router.get("/", (_req, res) => {
   return res.send(patientsService.getPatientsSafe());
 });
 
+router.post("/:id/entries", (req, res) => {
+  const id = req.params.id;
+  try {
+    return res.send(patientsService.addEntry(id, req.body));
+    
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).send({error: error.issues});
+    } else {
+      return res.status(400).send({error: 'unknown error'});
+    }
+  }
+});
+
+
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   const patient = patientsService.getOneById(id);
@@ -28,8 +43,8 @@ router.post("/", (req, res) => {
     } else {
       return res.status(400).send({error: 'unknown error'});
     }
-
   }
 });
+
 
 export default router;
