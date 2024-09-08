@@ -10,9 +10,9 @@ router.get("/", (_req, res) => {
 
 router.get("/:id", (req, res) => {
   const id = req.params.id;
-  const patient = patientsService.getOneByIdSafe(id);
+  const patient = patientsService.getOneById(id);
   if (patient !== undefined) {
-    return res.send(patientsService.getOneByIdSafe(id));
+    return res.send(patientsService.getOneById(id));
   } else {
     return res.status(404).send({error: 'patient not found'});
   }

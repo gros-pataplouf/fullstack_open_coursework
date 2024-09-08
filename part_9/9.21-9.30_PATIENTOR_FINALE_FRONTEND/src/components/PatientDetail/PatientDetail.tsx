@@ -1,4 +1,6 @@
 import { Patient, Gender } from '../../types'
+import EntryDetails from './EntryDetails';
+
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 
@@ -18,6 +20,11 @@ function PatientDetail(props: PatientProps) {
       <p>{patient?.occupation}</p>
       <p>{patient?.dateOfBirth}</p>
       <p>{patient?.ssn}</p>
+      <>
+      {patient?.entries?.map(entry => <EntryDetails entry={entry}/>)}
+      </>
+
+
     </div>
   )
 }

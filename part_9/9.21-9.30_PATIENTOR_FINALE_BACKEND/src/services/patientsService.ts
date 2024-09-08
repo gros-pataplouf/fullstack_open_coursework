@@ -6,8 +6,8 @@ import { v1 as uuid } from "uuid";
 const patients: Patient[] = patientsData as Patient[];
 
 const getPatientsSafe = (): NonSensitivePatient[] => {
-  return patients.map(({ id, name, dateOfBirth, gender, occupation }) => {
-    return { id, name, dateOfBirth, gender, occupation };
+  return patients.map(({ id, name, dateOfBirth, gender, occupation, ssn, entries }) => {
+    return { id, name, dateOfBirth, gender, occupation, ssn, entries };
   });
 };
 
@@ -17,7 +17,7 @@ const createPatient = (object: unknown): Patient | void => {
   patientsData.push({ id, ...newPatient });
 };
 
-const getOneByIdSafe = (id: string) : Patient | undefined => {
+const getOneById = (id: string) : Patient | undefined => {
   return patients.find(patient => patient.id === id);
 };
 
@@ -25,5 +25,5 @@ const getOneByIdSafe = (id: string) : Patient | undefined => {
 export default {
   getPatientsSafe,
   createPatient,
-  getOneByIdSafe
+  getOneById
 };
