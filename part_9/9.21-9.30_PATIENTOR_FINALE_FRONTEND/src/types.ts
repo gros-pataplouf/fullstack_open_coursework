@@ -9,6 +9,10 @@ export interface Diagnosis {
   latin?: string;
 }
 
+export interface DiagnosisForm extends Diagnosis {
+  selected: boolean;
+}
+
 export enum Gender {
   Male = "male",
   Female = "female",
