@@ -8,33 +8,24 @@ import {
   Select,
   Grid,
   Button,
-  Radio,
-  RadioGroup,
-  FormControl,
   FormControlLabel,
-  FormLabel,
   Checkbox,
-  FormGroup
-
+  FormGroup,
+  Box,
+  Typography,
+  Rating,
 } from "@mui/material";
 
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-
 import { EntryType, PatientFormValues } from "../../types";
-import { Check } from "@mui/icons-material";
-
-
-
 
 interface Props {
   onCancel: () => void;
   onSubmit: (values: PatientFormValues) => void;
 }
-
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [entryType, setEntryType] = useState(EntryType.HealthCheck);
@@ -44,12 +35,9 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [date, setDate] = React.useState<Dayjs | null>(null);
   const [startDate, setStartDate] = React.useState<Dayjs | null>(null);
   const [endDate, setEndDate] = React.useState<Dayjs | null>(null);
-
+  const [rating, setRating] = useState(0);
   const [employer, setEmployer] = useState("");
   const [sickLeave, setSickLeave] = useState(false);
-
-
-
 
   // const addPatient = (event: SyntheticEvent) => {
   //   event.preventDefault();
@@ -61,7 +49,6 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   //     gender,
   //   });
   // };
-
 
   return (
     <>
@@ -80,9 +67,11 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
       <div>
         <form onSubmit={() => {}}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker"]}>
-              <DatePicker label="Date" value={date}  onChange={(newValue) => setDate(newValue)} />
-            </DemoContainer>
+            <DatePicker
+              label="Date"
+              value={date}
+              onChange={(newValue) => setDate(newValue)}
+            />
           </LocalizationProvider>
           <TextField
             label="Description"
@@ -104,40 +93,62 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             onChange={({ target }) => setDiagnosisCodes(target.value)}
           />
 
-          {entryType === EntryType.HealthCheck && 
-          <>
-          Test qsdfqsdf
-          </>} 
-          {entryType === EntryType.Hospital && 
-          <>
-          </>}
-          {entryType === EntryType.OccupationalHealthcare && <>
-            <TextField
-            label="Employer"
-            fullWidth
-            value={employer}
-            onChange={({ target }) => setEmployer(target.value)}
-          />
-          <FormGroup>
-            <FormControlLabel control={<Checkbox checked={sickLeave} onChange={() => {setSickLeave(!sickLeave)}}/>} label="Sickleave" />
-            {sickLeave &&
+          {entryType === EntryType.HealthCheck && (
             <>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker"]}>
-              <DatePicker label="Start" value={startDate}  onChange={(newValue) => setStartDate(newValue)} />
-            </DemoContainer>
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker"]}>
-              <DatePicker label="End" value={endDate}  onChange={(newValue) => setEndDate(newValue)} />
-            </DemoContainer>
-          </LocalizationProvider>
-          </>
-          }
-
-          </FormGroup>
-
-          </>}
+              <Box sx={{ "& > legend": { mt: 2 } }}>
+                <Typography component="legend">Health Rating</Typography>
+                <Rating
+                  name="healthrating"
+                  value={rating}
+                  onChange={(_event, rating) => {
+                    rating !== null && setRating(rating);
+                  }}
+                />
+              </Box>
+            </>
+          )}
+          {entryType === EntryType.Hospital && <></>}
+          {entryType === EntryType.OccupationalHealthcare && (
+            <>
+              <TextField
+                label="Employer"
+                fullWidth
+                value={employer}
+                onChange={({ target }) => setEmployer(target.value)}
+              />
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={sickLeave}
+                      onChange={() => {
+                        setSickLeave(!sickLeave);
+                      }}
+                    />
+                  }
+                  label="Sickleave"
+                />
+                {sickLeave && (
+                  <>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="Start"
+                        value={startDate}
+                        onChange={(newValue) => setStartDate(newValue)}
+                      />
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="End"
+                        value={endDate}
+                        onChange={(newValue) => setEndDate(newValue)}
+                      />
+                    </LocalizationProvider>
+                  </>
+                )}
+              </FormGroup>
+            </>
+          )}
 
           <Grid>
             <Grid item>
