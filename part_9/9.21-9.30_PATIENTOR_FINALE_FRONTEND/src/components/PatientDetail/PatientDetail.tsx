@@ -1,8 +1,10 @@
 import { Patient, Gender } from '../../types';
+import { useState } from 'react';
 import EntryDetails from './EntryDetails';
-
+import { Button } from '@mui/material';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import AddEntryModal from '../AddEntryModal/index';
 
 
 interface PatientProps {
@@ -10,7 +12,19 @@ interface PatientProps {
 }
 
 function PatientDetail(props: PatientProps) {
+  const [modalOpen, setModalOpen] = useState(false);
   const {patient} = props;
+  function toggleModal() {
+    setModalOpen(!modalOpen)
+  }
+  function onSubmit() {
+
+  }
+
+  const error = "";
+  function onClose() {
+    
+  }
 
   return (
     <div>
@@ -20,9 +34,14 @@ function PatientDetail(props: PatientProps) {
       <p>{patient?.occupation}</p>
       <p>{patient?.dateOfBirth}</p>
       <p>{patient?.ssn}</p>
-      <>
-      {patient?.entries?.map(entry => <EntryDetails entry={entry}/>)}
-      </>
+
+      {modalOpen ? <AddEntryModal modalOpen={modalOpen} onClose={onClose} onSubmit={onSubmit} error={error} /> : <Button style={{backgroundColor: "purple", color: "white", marginBottom: "10px" }} onClick={toggleModal}>New entry</Button>
+    }
+
+
+      <div>
+      {patient?.entries?.map(entry => <EntryDetails key={entry.id} entry={entry}/>)}
+      </div>
 
 
     </div>
