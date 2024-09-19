@@ -1,9 +1,6 @@
+import dayjs, { Dayjs } from "dayjs";
+import React from "react";
 import { useState, SyntheticEvent } from "react";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { EntryType } from "../../types";
 import {
   TextField,
   InputLabel,
@@ -11,39 +8,46 @@ import {
   Select,
   Grid,
   Button,
-  SelectChangeEvent,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Checkbox,
+  FormGroup
+
 } from "@mui/material";
 
-import { PatientFormValues, Gender } from "../../types";
-import dayjs, { Dayjs } from "dayjs";
-import React from "react";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
+
+import { EntryType, PatientFormValues } from "../../types";
+import { Check } from "@mui/icons-material";
+
+
+
 
 interface Props {
   onCancel: () => void;
   onSubmit: (values: PatientFormValues) => void;
 }
 
-interface GenderOption {
-  value: Gender;
-  label: string;
-}
-
-const genderOptions: GenderOption[] = Object.values(Gender).map((v) => ({
-  value: v,
-  label: v.toString(),
-}));
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
-  const [typeSelected, setTypeSelected] = useState(false);
   const [entryType, setEntryType] = useState(EntryType.HealthCheck);
   const [description, setDescription] = useState("");
   const [specialist, setSpecialist] = useState("");
   const [diagnosisCodes, setDiagnosisCodes] = useState("");
-  const [date, setDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
-  const [occupation, setOccupation] = useState("");
-  const [ssn, setSsn] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [gender, setGender] = useState(Gender.Other);
+  const [date, setDate] = React.useState<Dayjs | null>(null);
+  const [startDate, setStartDate] = React.useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = React.useState<Dayjs | null>(null);
+
+  const [employer, setEmployer] = useState("");
+  const [sickLeave, setSickLeave] = useState(false);
+
 
 
 
@@ -90,7 +94,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             label="Specialist"
             fullWidth
             value={specialist}
-            onChange={({ target }) => setDescription(target.value)}
+            onChange={({ target }) => setSpecialist(target.value)}
           />
 
           <TextField
@@ -100,9 +104,40 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             onChange={({ target }) => setDiagnosisCodes(target.value)}
           />
 
-          {entryType === EntryType.HealthCheck && <div>Test</div>} 
-          {entryType === EntryType.Hospital && <div>Test 2</div>}
-          {entryType === EntryType.OccupationalHealthcare && <div>Test 3</div>}
+          {entryType === EntryType.HealthCheck && 
+          <>
+          Test qsdfqsdf
+          </>} 
+          {entryType === EntryType.Hospital && 
+          <>
+          </>}
+          {entryType === EntryType.OccupationalHealthcare && <>
+            <TextField
+            label="Employer"
+            fullWidth
+            value={employer}
+            onChange={({ target }) => setEmployer(target.value)}
+          />
+          <FormGroup>
+            <FormControlLabel control={<Checkbox checked={sickLeave} onChange={() => {setSickLeave(!sickLeave)}}/>} label="Sickleave" />
+            {sickLeave &&
+            <>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["DatePicker"]}>
+              <DatePicker label="Start" value={startDate}  onChange={(newValue) => setStartDate(newValue)} />
+            </DemoContainer>
+          </LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["DatePicker"]}>
+              <DatePicker label="End" value={endDate}  onChange={(newValue) => setEndDate(newValue)} />
+            </DemoContainer>
+          </LocalizationProvider>
+          </>
+          }
+
+          </FormGroup>
+
+          </>}
 
           <Grid>
             <Grid item>
