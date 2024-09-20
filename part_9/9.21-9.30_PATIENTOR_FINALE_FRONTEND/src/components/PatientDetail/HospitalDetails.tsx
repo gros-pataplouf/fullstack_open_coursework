@@ -1,5 +1,5 @@
-import React from 'react'
-import { HospitalEntry } from '../../types'
+import React from 'react';
+import { HospitalEntry } from '../../types';
 
 function HospitalDetails(entry: HospitalEntry) : React.JSX.Element {
   return (
@@ -7,7 +7,7 @@ function HospitalDetails(entry: HospitalEntry) : React.JSX.Element {
     <p>Discharge date: {entry.discharge?.date}</p>
     <p>Discharge decision: {entry.discharge?.criteria}</p>
     </>
-  )
+  );
 }
 
-export default HospitalDetails
+export default HospitalDetails;

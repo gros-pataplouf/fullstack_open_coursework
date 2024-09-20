@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
-import { Entry } from '../../types'
+import { Entry } from '../../types';
 
 interface EntryDetailProps {
     entry: Entry;
@@ -30,7 +30,7 @@ function BaseEntryDetails(props : EntryDetailProps) : React.JSX.Element {
     </CardContent>
     </Card>
     </Box>
-  )
+  );
 }
 
-export default BaseEntryDetails
+export default BaseEntryDetails;

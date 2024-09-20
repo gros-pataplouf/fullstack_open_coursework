@@ -7,7 +7,6 @@ interface DiagnosisProps {
 
 function DiagnosisDetails(props: DiagnosisProps) : React.JSX.Element {
   const { diagnosis } = props;
-  console.log(diagnosis, "Diagnosis")
   return <li>{diagnosis?.code} <span>{diagnosis?.name}</span></li>;
 }
 

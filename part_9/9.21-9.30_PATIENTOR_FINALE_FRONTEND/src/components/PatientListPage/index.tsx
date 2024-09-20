@@ -36,13 +36,11 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "string") {
           const message = e.response.data.replace('Something went wrong. Error: ', '');
-          console.error(message);
           setError(message);
         } else {
           setError("Unrecognized axios error");
         }
       } else {
-        console.error("Unknown error", e);
         setError("Unknown error");
       }
     }
@@ -67,9 +65,9 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
         <TableBody>
           {Object.values(patients).map((patient: Patient) => (
             <TableRow key={patient.id}>
-              <Link  to={`/patients/${patient.id}`}>
-              <TableCell>{patient.name}</TableCell>
-              </Link>
+             
+              <TableCell> <Link  to={`/patients/${patient.id}`}>{patient.name}</Link></TableCell>
+              
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>

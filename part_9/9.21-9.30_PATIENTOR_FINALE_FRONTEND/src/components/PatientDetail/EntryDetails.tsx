@@ -24,15 +24,13 @@ function EntryDetails(props: EntryProps) {
   useEffect(() => {
     const getDiagnosis = async () => {
       const diagArray = await diagnosisService.getAll();
-      console.log(diagArray);
       setDiagnosis(diagArray);
     };
     getDiagnosis();
   }, []);
 
   switch(entry.type) {
-    case 'HealthCheck':
-      console.log(entry)
+    case 'Healthcheck':
       return (
         <BaseEntryDetails entry={entry}>
         <ChecklistIcon />
@@ -43,7 +41,7 @@ function EntryDetails(props: EntryProps) {
         <HealthCheckDetails {...entry} />
         </BaseEntryDetails>
       );
-    case 'OccupationalHealthcare':
+    case 'Occupational Healthcare':
       return (
         <BaseEntryDetails entry={entry}>
         <BusinessIcon />
@@ -75,12 +73,12 @@ function EntryDetails(props: EntryProps) {
           {entry.diagnosisCodes?.map(code => <DiagnosisDetails key={code} diagnosis={diagnosis.find(diag => diag.code === code)}/>)}
         </ul> */}
         </>
-      )
+      );
 
   }
 
 
-;
+
 }
 
 export default EntryDetails;

@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 import React from "react";
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect } from "react";
 import {
   TextField,
   InputLabel,
@@ -14,33 +14,36 @@ import {
   Box,
   Typography,
   Rating,
+  FormControl,
+  SelectChangeEvent,
+  OutlinedInput,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { EntryType, PatientFormValues, Diagnosis, DiagnosisForm } from "../../types";
+import { EntryType, DiagnosisForm, EntryFormValues } from "../../types";
 import diagnosisService from "../../services/diagnosis";
-import { SpaRounded } from "@mui/icons-material";
 
 interface Props {
   onCancel: () => void;
-  onSubmit: (values: PatientFormValues) => void;
+  onSubmit: (values: EntryFormValues) => void;
 }
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   useEffect(() => {
-    diagnosisService.getAll()
-    .then(data => {
-      const dataWithSelect : DiagnosisForm[] = data.map((diag) => {return {...diag, selected: false}} );
-      setDiagnosis(dataWithSelect);
-    })
-    .catch(err => console.error(err))
-
-  }, [])
+    diagnosisService
+      .getAll()
+      .then((data) => {
+        const dataWithSelect: DiagnosisForm[] = data.map((diag) => {
+          return { ...diag, selected: false };
+        });
+        setDiagnosis(dataWithSelect);
+      })
+      .catch((_err) => null);
+  }, []);
   const [entryType, setEntryType] = useState(EntryType.HealthCheck);
   const [description, setDescription] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [diagnosisCodes, setDiagnosisCodes] = useState("");
   const [date, setDate] = React.useState<Dayjs | null>(null);
   const [startDate, setStartDate] = React.useState<Dayjs | null>(null);
   const [endDate, setEndDate] = React.useState<Dayjs | null>(null);
@@ -50,17 +53,76 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [employer, setEmployer] = useState("");
   const [sickLeave, setSickLeave] = useState(false);
   const [diagnosis, setDiagnosis] = useState<DiagnosisForm[]>([]);
+  const [diagCodes, setDiagCodes] = React.useState<string[]>([]);
 
-  // const addPatient = (event: SyntheticEvent) => {
-  //   event.preventDefault();
-  //   onSubmit({
-  //     name,
-  //     occupation,
-  //     ssn,
-  //     dateOfBirth,
-  //     gender,
-  //   });
-  // };
+
+  const handleSubmit = (e : React.SyntheticEvent) => {
+    e.preventDefault();    
+    switch(entryType) {
+      case EntryType.HealthCheck:
+        return onSubmit({
+          type: EntryType.HealthCheck,
+          date: "2024-09-01",
+          description,
+          specialist,
+          diagnosisCodes: diagCodes,
+          healthCheckRating: rating
+        });
+      case EntryType.Hospital:
+        return onSubmit({
+          type: EntryType.Hospital,
+          date: "2024-09-01",
+          description, 
+          specialist,
+          diagnosisCodes: diagCodes,
+          discharge: {
+            date: "2024-09-01", //dischargeDate,
+            criteria: dischargeCriteria
+          }
+        });
+
+        case EntryType.OccupationalHealthcare:
+          return onSubmit({
+            type: EntryType.OccupationalHealthcare,
+            date: "2024-09-01",
+            description, 
+            specialist,
+            employerName : employer,
+            diagnosisCodes: diagCodes,
+            sickLeave: {
+              startDate: "2024-09-01", //dischargeDate,
+              endDate: "2025-09-01"
+            }
+          });
+    }
+    
+  };
+
+
+  const handleChange = (event: SelectChangeEvent<typeof diagCodes>) => {
+    const {
+      target: { value },
+    } = event;
+    setDiagCodes(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+
+
 
   return (
     <>
@@ -77,7 +139,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
         ))}
       </Select>
       <div>
-        <form onSubmit={() => {}}>
+        <form onSubmit={handleSubmit}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Date"
@@ -98,26 +160,25 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             onChange={({ target }) => setSpecialist(target.value)}
           />
 
-          <TextField
-            label="Diagnosis codes"
-            fullWidth
-            value={diagnosis.filter(diag => diag.selected).map(diag => diag.code)}
-          />
+          <FormControl sx={{ mt: 4, width: 300 }}>
+            <InputLabel id="demo-multiple-name-label">Diagnosis codes</InputLabel>
+            <Select
+              labelId="demo-multiple-name-label"
+              id="demo-multiple-name"
+              multiple
+              value={diagCodes}
+              onChange={handleChange}
+              input={<OutlinedInput label="Diagnosis codes" />}
+              MenuProps={MenuProps}
+            >
+              {diagnosis.map((diag) => (
+                <MenuItem key={diag.code} value={diag.code}>
 
-
-          {diagnosis.map(diag => <FormControlLabel
-                  key={diag.code}
-                  control={
-                    <Checkbox
-                      checked={diag.selected}
-                      onChange={() => {
-                        setDiagnosis(diagnosis.map(diag2 => diag2.code === diag.code ? {...diag, selected: !diag.selected} : diag2));
-                      }}
-                    />
-                  }
-                  label={diag.code}
-                />)}
-
+                  {diag.code}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           {entryType === EntryType.HealthCheck && (
             <>
@@ -143,13 +204,13 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                   onChange={(newValue) => setDischargeDate(newValue)}
                 />
               </LocalizationProvider>
-            <TextField
-            label="Discharge criteria"
-            fullWidth
-            value={dischargeCriteria}
-            onChange={({ target }) => setDischargeCriteria(target.value)}
-          />
-          </>
+              <TextField
+                label="Discharge criteria"
+                fullWidth
+                value={dischargeCriteria}
+                onChange={({ target }) => setDischargeCriteria(target.value)}
+              />
+            </>
           )}
           {entryType === EntryType.OccupationalHealthcare && (
             <>
