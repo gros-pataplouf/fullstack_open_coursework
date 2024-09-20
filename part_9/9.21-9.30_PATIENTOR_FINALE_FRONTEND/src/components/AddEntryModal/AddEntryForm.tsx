@@ -21,7 +21,14 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { EntryType, DiagnosisForm, EntryFormValues } from "../../types";
+import {
+  EntryType,
+  DiagnosisForm,
+  EntryFormValues,
+  HospitalEntrySchema,
+  HealthCheckSchema,
+  OccupationalHealthcareSchema,
+} from "../../types";
 import diagnosisService from "../../services/diagnosis";
 
 interface Props {
@@ -30,17 +37,6 @@ interface Props {
 }
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
-  useEffect(() => {
-    diagnosisService
-      .getAll()
-      .then((data) => {
-        const dataWithSelect: DiagnosisForm[] = data.map((diag) => {
-          return { ...diag, selected: false };
-        });
-        setDiagnosis(dataWithSelect);
-      })
-      .catch((_err) => null);
-  }, []);
   const [entryType, setEntryType] = useState(EntryType.HealthCheck);
   const [description, setDescription] = useState("");
   const [specialist, setSpecialist] = useState("");
@@ -54,61 +50,85 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [sickLeave, setSickLeave] = useState(false);
   const [diagnosis, setDiagnosis] = useState<DiagnosisForm[]>([]);
   const [diagCodes, setDiagCodes] = React.useState<string[]>([]);
+  useEffect(() => {
+    diagnosisService
+      .getAll()
+      .then((data) => {
+        const dataWithSelect: DiagnosisForm[] = data.map((diag) => {
+          return { ...diag, selected: false };
+        });
+        setDiagnosis(dataWithSelect);
+      })
+      .catch((_err) => null);
+  }, []);
 
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
 
-  const handleSubmit = (e : React.SyntheticEvent) => {
-    e.preventDefault();    
-    switch(entryType) {
+    switch (entryType) {
       case EntryType.HealthCheck:
-        return onSubmit({
-          type: EntryType.HealthCheck,
-          date: "2024-09-01",
-          description,
-          specialist,
-          diagnosisCodes: diagCodes,
-          healthCheckRating: rating
-        });
-      case EntryType.Hospital:
-        return onSubmit({
-          type: EntryType.Hospital,
-          date: "2024-09-01",
-          description, 
-          specialist,
-          diagnosisCodes: diagCodes,
-          discharge: {
-            date: "2024-09-01", //dischargeDate,
-            criteria: dischargeCriteria
-          }
-        });
+        try {
+          const newEntry = HealthCheckSchema.parse({
+            type: EntryType.HealthCheck,
+            date: date?.toISOString(),
+            description,
+            specialist,
+            diagnosisCodes: diagCodes,
+            healthCheckRating: rating,
+          });
+          return onSubmit(newEntry);
+        } catch (error) {
+          window.alert("Invalid form data, please review the data entered.");
+          return null;
+        }
 
-        case EntryType.OccupationalHealthcare:
-          return onSubmit({
+      case EntryType.Hospital:
+        try {
+          const newEntry = HospitalEntrySchema.parse({
+            type: EntryType.Hospital,
+            date: date?.toISOString(),
+            description,
+            specialist,
+            diagnosisCodes: diagCodes,
+            discharge: {
+              date: dischargeDate?.toISOString(),
+              criteria: dischargeCriteria,
+            },
+          });
+          return onSubmit(newEntry);
+        } catch {
+          window.alert("Invalid form data, please review the data entered.");
+          return null;
+        }
+
+      case EntryType.OccupationalHealthcare:
+        try {
+          const newEntry = OccupationalHealthcareSchema.parse({
             type: EntryType.OccupationalHealthcare,
             date: "2024-09-01",
-            description, 
+            description,
             specialist,
-            employerName : employer,
+            employerName: employer,
             diagnosisCodes: diagCodes,
             sickLeave: {
               startDate: "2024-09-01", //dischargeDate,
-              endDate: "2025-09-01"
-            }
+              endDate: "2025-09-01",
+            },
           });
+          return onSubmit(newEntry);
+        } catch {
+          window.alert("Invalid form data, please review the data entered.");
+          return null;
+        }
     }
-    
   };
-
 
   const handleChange = (event: SelectChangeEvent<typeof diagCodes>) => {
     const {
       target: { value },
     } = event;
-    setDiagCodes(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setDiagCodes(typeof value === "string" ? value.split(",") : value);
   };
-
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -120,9 +140,6 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
       },
     },
   };
-
-
-
 
   return (
     <>
@@ -161,7 +178,9 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           />
 
           <FormControl sx={{ mt: 4, width: 300 }}>
-            <InputLabel id="demo-multiple-name-label">Diagnosis codes</InputLabel>
+            <InputLabel id="demo-multiple-name-label">
+              Diagnosis codes
+            </InputLabel>
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
@@ -173,7 +192,6 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             >
               {diagnosis.map((diag) => (
                 <MenuItem key={diag.code} value={diag.code}>
-
                   {diag.code}
                 </MenuItem>
               ))}
@@ -186,7 +204,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
                 <Typography component="legend">Health Rating</Typography>
                 <Rating
                   name="healthrating"
-                  max={4}
+                  max={3}
                   value={rating}
                   onChange={(_event, rating) => {
                     rating !== null && setRating(rating);

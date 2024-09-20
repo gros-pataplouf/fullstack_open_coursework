@@ -1,3 +1,5 @@
+import {z} from "zod";
+
 export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
@@ -73,6 +75,40 @@ export enum HealthCheckRating {
   HighRisk = 2,
   CriticalRisk = 3
 }
+
+const BaseEntrySchema = {
+  description: z.string(),
+  date: z.string(),
+  specialist: z.string(),
+  diagnosisCodes: z.array(z.string()).optional(),
+};
+
+export const HospitalEntrySchema = z.object({
+  ...BaseEntrySchema,
+  type: z.literal(EntryType.Hospital),
+  discharge: z.object({
+    date: z.string(),
+    criteria: z.string(),
+  }),
+});
+
+export const OccupationalHealthcareSchema = z.object({
+  type: z.literal(EntryType.OccupationalHealthcare),
+  ...BaseEntrySchema,
+  employerName: z.string(),
+  sickLeave: z
+    .object({
+      startDate: z.string(),
+      endDate: z.string(),
+    })
+    .optional(),
+});
+
+export const HealthCheckSchema = z.object({
+  type: z.literal(EntryType.HealthCheck),
+  ...BaseEntrySchema,
+  healthCheckRating: z.nativeEnum(HealthCheckRating),
+});
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;

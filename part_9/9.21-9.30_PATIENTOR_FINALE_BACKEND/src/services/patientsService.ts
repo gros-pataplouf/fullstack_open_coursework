@@ -25,6 +25,7 @@ const addEntry = (patientId: string, entry: NewEntry) : void => {
   const id = uuid();
   const newEntry = toNewEntry({id, ...entry});
   const patient = patients.find(patient => patient.id === patientId);
+  console.log(patient, patient?.id, patientId);
   patient?.entries?.push(newEntry);
 }
 
